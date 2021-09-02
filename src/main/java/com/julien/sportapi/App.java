@@ -21,9 +21,6 @@ public class App {
         initGymData(gymService);
         initSubscriptionData(subscriptionService);
 
-        CliController cliController = applicationContext.getBean(CliController.class);
-        cliController.start();
-
     }
 
     private static void initGymData(GymService gymService) {

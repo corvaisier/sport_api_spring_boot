@@ -9,21 +9,30 @@ import java.util.Optional;
 
 @Repository
 public class CoachDaoInMemory implements CoachDao {
-    private List<Coach> coachs = new ArrayList<>();
+    private final List<Coach> coaches = new ArrayList<>();
 
     public List<Coach> findAll() {
-        return coachs;
+        return coaches;
     }
 
-    public Optional<Coach> findByName(String coach_Name) {
-        return coachs.stream().filter(coach -> coach.getCoach_Name().contains(coach_Name)).findFirst();
+    public Optional<Coach> findByName(String coachName) {
+        return coaches.stream().filter(coach -> coach.getCoachName().contains(coachName)).findFirst();
     }
 
     public void add(Coach coach) {
-        coachs.add(coach);
+        coaches.add(coach);
     }
 
-    public void delete(String coach_Name) {
+    public void delete(String coachName) {
+        coaches.removeIf(next -> next.getCoachName().equals(coachName));
+    }
+
+    public void update(String coachName, String newCoachName) {
+        for (Coach next : coaches) {
+            if (next.getCoachName().equals(coachName)) {
+                next.setCoachName(newCoachName);
+            }
+        }
     }
 
 }

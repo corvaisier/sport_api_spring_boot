@@ -17,21 +17,26 @@ public class CoachService {
         this.coachDao = coachDao;
     }
 
-    public void add(String coach_Name) {
-        Coach newCoach = new Coach(UUID.randomUUID(), coach_Name);
+    public Coach add(String coachName) {
+        Coach newCoach = new Coach(UUID.randomUUID(), coachName);
         coachDao.add(newCoach);
+        return newCoach;
     }
 
-    public void delete(String coach_Name) {
+    public void delete(String coachName) {
+        coachDao.delete(coachName);
+    }
 
+    public void update(String coachName, String new_CoachName) {
+        coachDao.update(coachName, new_CoachName);
     }
 
     public List<Coach> findAll() {
         return coachDao.findAll();
     }
 
-    public Optional<Coach> findByName(String coach_Name) {
-        return coachDao.findByName(coach_Name);
+    public Optional<Coach> findByName(String coachName) {
+        return coachDao.findByName(coachName);
     }
 
 }

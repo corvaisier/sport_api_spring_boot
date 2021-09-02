@@ -35,8 +35,8 @@ public class CoachServiceTest {
         verify(mockedDao).add(coachArgumentCaptor.capture());
 
         Coach coachSentToDAO = coachArgumentCaptor.getValue();
-        assertThat(coachSentToDAO.getCoach_ID(), is(notNullValue()));
-        assertThat(coachSentToDAO.getCoach_Name(), is("Toto"));
+        assertThat(coachSentToDAO.getCoachID(), is(notNullValue()));
+        assertThat(coachSentToDAO.getCoachName(), is("Toto"));
     }
 
     @Test
@@ -52,8 +52,8 @@ public class CoachServiceTest {
 
         when(mockedDao.findAll()).thenReturn(expectedCoach);
 
-        List<Coach> actualCoachs = mockedService.findAll();
-        assertThat(actualCoachs, equalTo(expectedCoach));
+        List<Coach> actualCoaches = mockedService.findAll();
+        assertThat(actualCoaches, equalTo(expectedCoach));
     }
 
     @Test
@@ -66,7 +66,7 @@ public class CoachServiceTest {
         Optional<Coach> expectedResult = mockedDao.findByName("Super coach");
 
         when(expectedResult).thenReturn(CoachList
-                .stream().filter(coach -> coach.getCoach_Name().contains("Super coach")).findFirst());
+                .stream().filter(coach -> coach.getCoachName().contains("Super coach")).findFirst());
 
         Optional<Coach> actualCoach = mockedService.findByName("Super coach");
         assertThat(actualCoach, equalTo(expectedResult));

@@ -7,7 +7,8 @@ import com.julien.sportapi.domain.Coach;
 
 public interface CoachDao {
     List<Coach> findAll();
-    Optional<Coach> findByName(String coach_Name);
+    Optional<Coach> findByName(String coachName);
     void add(Coach coach);
-    void delete(String coach_Name);
+    void delete(String coachName);
+    void update(String coachName, String newCoachName);
 }

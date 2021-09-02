@@ -3,30 +3,30 @@ package com.julien.sportapi.domain;
 import java.util.UUID;
 
 public class Coach {
-    private UUID coach_ID;
-    private String coach_Name;
+    private final UUID coachID;
+    private String coachName;
 
-    public Coach(UUID coach_ID, String coach_Name) {
-        this.coach_ID = coach_ID;
-        this.coach_Name = coach_Name;
+    public Coach(UUID coachID, String coachName) {
+        this.coachID = coachID;
+        this.coachName = coachName;
     }
 
-    public UUID getCoach_ID() {
-        return coach_ID;
+    public UUID getCoachID() {
+        return coachID;
     }
 
-    public String getCoach_Name() {
-        return coach_Name;
+    public String getCoachName() {
+        return coachName;
     }
 
-    public void setCoach_Name(String coach_Name) {
-        this.coach_Name = coach_Name;
+    public void setCoachName(String coachName) {
+        this.coachName = coachName;
     }
 
     public String toString() {
         return "Coach{" +
-                "id=" + coach_ID +
-                ", name='" + coach_Name + 
+                "id=" + coachID +
+                ", name='" + coachName +
                 '}';
     }
     
