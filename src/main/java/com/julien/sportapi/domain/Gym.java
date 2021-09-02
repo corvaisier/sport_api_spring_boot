@@ -3,41 +3,41 @@ package com.julien.sportapi.domain;
 import java.util.UUID;
 
 public class Gym {
-    private UUID gym_ID;
-    private String gym_Name;
-    private String gym_Location;
+    private UUID gymID;
+    private String gymName;
+    private String gymLocation;
 
     public Gym(UUID gym_ID, String gym_Name, String gym_Location) {
-        this.gym_ID = gym_ID;
-        this.gym_Name = gym_Name;
-        this.gym_Location = gym_Location;
+        this.gymID = gym_ID;
+        this.gymName = gym_Name;
+        this.gymLocation = gym_Location;
     }
 
-    public UUID getGym_ID() {
-        return gym_ID;
+    public UUID getGymID() {
+        return gymID;
     }
 
-    public String getGym_Name() {
-        return gym_Name;
+    public String getGymName() {
+        return gymName;
     }
 
-    public void setGym_Name(String gym_Name) {
-        this.gym_Name = gym_Name;
+    public void setGymName(String gymName) {
+        this.gymName = gymName;
     }
 
-    public String getGym_Location() {
-        return gym_Location;
+    public String getGymLocation() {
+        return gymLocation;
     }
 
-    public void setGym_Location(String gym_Location) {
-        this.gym_Location = gym_Location;
+    public void setGymLocation(String gymLocation) {
+        this.gymLocation = gymLocation;
     }
 
     public String toString() {
         return "Gym{" +
-                "id=" + gym_ID +
-                ", name='" + gym_Name + '\'' +
-                ", location='" + gym_Location + '\'' +
+                "id=" + gymID +
+                ", name='" + gymName + '\'' +
+                ", location='" + gymLocation + '\'' +
                 '}';
     }
 }

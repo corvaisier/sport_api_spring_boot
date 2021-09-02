@@ -1,9 +1,7 @@
 package com.julien.sportapi;
 
-import com.julien.sportapi.cli.CliController;
 import com.julien.sportapi.service.CoachService;
 import com.julien.sportapi.service.GymService;
-import com.julien.sportapi.service.SubscriptionService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -15,11 +13,9 @@ public class App {
         ApplicationContext applicationContext =  SpringApplication.run(App.class, args);
         CoachService coachService = applicationContext.getBean(CoachService.class);
         GymService gymService = applicationContext.getBean(GymService.class);
-        SubscriptionService subscriptionService = applicationContext.getBean(SubscriptionService.class);
 
         initCoachData(coachService);
         initGymData(gymService);
-        initSubscriptionData(subscriptionService);
 
     }
 
@@ -33,9 +29,5 @@ public class App {
         coachService.add("coach trop fort !");
     }
 
-    private static void initSubscriptionData(SubscriptionService subscriptionService) {
-        subscriptionService.add();
-        subscriptionService.add();
-    }
 
 }
