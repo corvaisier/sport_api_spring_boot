@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/gym")
@@ -26,7 +25,7 @@ public class GymController {
     @GetMapping("/{gymName}")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    Optional<Gym> findByName(@PathVariable String gymName) {
+    Gym findByName(@PathVariable String gymName) {
         return gymService.findByName(gymName);
     }
 
@@ -38,13 +37,13 @@ public class GymController {
 
     @DeleteMapping("")
     @ResponseStatus(code = HttpStatus.CREATED)
-    @ResponseBody void delete(String gymName) {
-        gymService.delete(gymName);
+    @ResponseBody void delete(Gym gym) {
+        gymService.delete(gym);
     }
 
     @PatchMapping("")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void update(@RequestParam String gymName, String newGymName) {
-        gymService.update(gymName, newGymName);
+    void update(@RequestParam Gym gym) {
+        gymService.update(gym);
     }
 }

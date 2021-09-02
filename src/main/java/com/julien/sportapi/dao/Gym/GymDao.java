@@ -3,12 +3,13 @@ package com.julien.sportapi.dao.Gym;
 import com.julien.sportapi.domain.Gym;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 public interface GymDao {
     List<Gym> findAll();
-    Optional<Gym> findByName(String gymName);
+    Gym findByGymName(String gymName);
+    Gym findByGymId(UUID gymId);
     void add(Gym gym);
-    void delete(String gymName);
-    void update(String gymName, String newGymName);
+    void delete(Gym gym);
+    void update(Gym gym);
 }

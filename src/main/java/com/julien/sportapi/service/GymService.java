@@ -1,7 +1,6 @@
 package com.julien.sportapi.service;
 
 import com.julien.sportapi.dao.Gym.GymDao;
-import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Gym;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,7 @@ import java.util.UUID;
 @Service
 public class GymService {
 
-    private GymDao gymDao;
+    private final GymDao gymDao;
 
     public GymService(GymDao gymDao) {
         this.gymDao = gymDao;
@@ -24,19 +23,22 @@ public class GymService {
         return newGym;
     }
 
-    public void delete(String gymName) {
-        gymDao.delete(gymName);
+    public void delete(Gym gym) {
+        gymDao.delete(gym);
     }
 
-    public void update(String gymName, String newGymName) {
-        gymDao.update(gymName, newGymName);
+    public void update(Gym newGym) {
+//        Gym currentGym = gymDao.findById(newGym.getGymID()).orElseThrow(()-> new RuntimeException());
+//        if(!newGym.getGymName().equals(null)) currentGym.setGymName(newGym.getGymName());
+//        if(!newGym.getGymLocation().equals(null)) currentGym.setGymLocation(newGym.getGymLocation());
+//        gymDao.update(currentGym);
     }
 
     public List<Gym> findAll() {
         return gymDao.findAll();
     }
 
-    public Optional<Gym> findByName(String gymName) {
-        return gymDao.findByName(gymName);
+    public Gym findByName(String gymName) {
+        return gymDao.findByGymName(gymName);
     }
 }

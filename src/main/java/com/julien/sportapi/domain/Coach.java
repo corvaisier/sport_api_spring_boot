@@ -1,33 +1,23 @@
 package com.julien.sportapi.domain;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.UUID;
 
+@Entity
+@Data
+@NoArgsConstructor
 public class Coach {
-    private final UUID coachID;
+    @Id
+    private UUID coachId;
     private String coachName;
 
     public Coach(UUID coachID, String coachName) {
-        this.coachID = coachID;
+        this.coachId = coachID;
         this.coachName = coachName;
-    }
-
-    public UUID getCoachID() {
-        return coachID;
-    }
-
-    public String getCoachName() {
-        return coachName;
-    }
-
-    public void setCoachName(String coachName) {
-        this.coachName = coachName;
-    }
-
-    public String toString() {
-        return "Coach{" +
-                "id=" + coachID +
-                ", name='" + coachName +
-                '}';
     }
     
 }

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/coach")
@@ -27,8 +27,15 @@ public class CoachController {
     @GetMapping("/{coachName}")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    Optional<Coach> findByName(@PathVariable String coachName) {
+    Coach findByName(@PathVariable String coachName) {
         return coachService.findByName(coachName);
+    }
+
+    @GetMapping("/{coachId}")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @ResponseBody
+    Coach findById(@PathVariable UUID coachId) {
+        return coachService.findById(coachId);
     }
 
     @PostMapping("")
@@ -39,8 +46,8 @@ public class CoachController {
 
      @DeleteMapping("")
      @ResponseStatus(code = HttpStatus.CREATED)
-     @ResponseBody void delete(String coachName) {
-        coachService.delete(coachName);
+     @ResponseBody void delete(Coach coach) {
+        coachService.delete(coach);
     }
 
     @PatchMapping("")

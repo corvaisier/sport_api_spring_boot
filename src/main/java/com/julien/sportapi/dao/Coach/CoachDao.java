@@ -1,14 +1,15 @@
 package com.julien.sportapi.dao.Coach;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import com.julien.sportapi.domain.Coach;
 
 public interface CoachDao {
     List<Coach> findAll();
-    Optional<Coach> findByName(String coachName);
+    Coach findByName(String coachName);
+    Coach findById(UUID coachId);
     void add(Coach coach);
-    void delete(String coachName);
+    void delete(Coach coach);
     void update(String coachName, String newCoachName);
 }

@@ -9,7 +9,6 @@ import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -35,7 +34,7 @@ public class CoachServiceTest {
         verify(mockedDao).add(coachArgumentCaptor.capture());
 
         Coach coachSentToDAO = coachArgumentCaptor.getValue();
-        assertThat(coachSentToDAO.getCoachID(), is(notNullValue()));
+        assertThat(coachSentToDAO.getCoachId(), is(notNullValue()));
         assertThat(coachSentToDAO.getCoachName(), is("Toto"));
     }
 
@@ -63,12 +62,12 @@ public class CoachServiceTest {
                 new Coach(UUID.randomUUID(), "Super tout court")
         );
 
-        Optional<Coach> expectedResult = mockedDao.findByName("Super coach");
+        Coach expectedResult = mockedDao.findByName("Super coach");
 
         when(expectedResult).thenReturn(CoachList
-                .stream().filter(coach -> coach.getCoachName().contains("Super coach")).findFirst());
+                .stream().filter(coach -> coach.getCoachName().contains("Super coach")).findFirst().get());
 
-        Optional<Coach> actualCoach = mockedService.findByName("Super coach");
+        Coach actualCoach = mockedService.findByName("Super coach");
         assertThat(actualCoach, equalTo(expectedResult));
     }
 }
