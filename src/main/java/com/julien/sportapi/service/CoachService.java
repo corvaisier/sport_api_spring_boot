@@ -26,8 +26,8 @@ public class CoachService {
         coachDao.delete(coach);
     }
 
-    public void update(String coachName, String newCoachName) {
-        coachDao.update(coachName, newCoachName);
+    public void update(UUID coachId, String newCoachName) {
+        coachDao.update(coachId, newCoachName);
     }
 
     public List<Coach> findAll() {

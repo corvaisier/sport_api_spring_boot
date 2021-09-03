@@ -24,7 +24,7 @@ public class CoachController {
         return coachService.findAll();
     }
 
-    @GetMapping("/{coachName}")
+    @GetMapping("/name/{coachName}")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
     Coach findByName(@PathVariable String coachName) {
@@ -52,8 +52,8 @@ public class CoachController {
 
     @PatchMapping("")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void update(@RequestParam String coachName, String newCoachName) {
-        coachService.update(coachName, newCoachName);
+    void update(@RequestParam UUID coachId, String newCoachName) {
+        coachService.update(coachId, newCoachName);
     }
 
 }

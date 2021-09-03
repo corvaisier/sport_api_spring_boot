@@ -11,5 +11,5 @@ public interface CoachDao {
     Coach findById(UUID coachId);
     void add(Coach coach);
     void delete(Coach coach);
-    void update(String coachName, String newCoachName);
+    void update(UUID coachId, String newCoachName);
 }

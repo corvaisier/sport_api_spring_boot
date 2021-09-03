@@ -6,12 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
-class CoachDaoInH2Test {
+class CoachDaoInDBTest {
 
     private CoachDao coachDao;
     private Coach firstCoach;
@@ -19,7 +16,7 @@ class CoachDaoInH2Test {
 
     @BeforeEach
     void setUp() {
-        coachDao = new CoachDaoInH2();
+        coachDao = new CoachDaoInDB(null);
         firstCoach = new Coach(UUID.randomUUID(), "firstCoach");
         secondCoach = new Coach(UUID.randomUUID(), "secondCoach");
 

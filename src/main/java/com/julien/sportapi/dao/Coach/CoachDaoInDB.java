@@ -1,20 +1,21 @@
 package com.julien.sportapi.dao.Coach;
 
 import com.julien.sportapi.domain.Coach;
+import com.julien.sportapi.exception.CoachException.CoachByNameNotFoundException;
+import com.julien.sportapi.exception.CoachException.CoachIdNotFoundException;
+
 import com.julien.sportapi.repository.CoachRepository;
 
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-@NoArgsConstructor
-public class CoachDaoInH2 implements CoachDao{
+public class CoachDaoInDB implements CoachDao{
     private CoachRepository coachRepository;
 
-    public CoachDaoInH2(CoachRepository coachRepository) {
+    public CoachDaoInDB(CoachRepository coachRepository) {
         this.coachRepository = coachRepository;
     }
 
@@ -25,26 +26,27 @@ public class CoachDaoInH2 implements CoachDao{
 
     @Override
     public Coach findByName(String coachName) {
-        return coachRepository.findByCoachName(coachName);
+        return coachRepository.findByCoachName(coachName).orElseThrow(() -> new CoachByNameNotFoundException(coachName));
     }
 
     @Override
     public Coach findById(UUID coachId) {
-        return coachRepository.findById(coachId).orElseThrow(RuntimeException::new);
+        return coachRepository.findById(coachId).orElseThrow(() -> new CoachIdNotFoundException(coachId));
     }
 
     @Override
-    public void add(Coach coach) {
+    public void add (Coach coach) {
         coachRepository.save(coach);
     }
 
     public void delete(Coach coach) {
         coachRepository.delete(coach);
+
     }
 
     @Override
-    public void update(String coachName, String newCoachName) {
-        Coach currentCoach = coachRepository.findByCoachName(coachName);
+    public void update(UUID coachId, String newCoachName) {
+        Coach currentCoach = coachRepository.findById(coachId).orElseThrow(() -> new CoachIdNotFoundException(coachId));
         currentCoach.setCoachName(newCoachName);
         coachRepository.save(currentCoach);
     }

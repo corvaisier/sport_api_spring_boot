@@ -1,19 +1,19 @@
 package com.julien.sportapi.dao.Gym;
 
 import com.julien.sportapi.domain.Gym;
+import com.julien.sportapi.exception.GymException.GymByIdNotFoundException;
+import com.julien.sportapi.exception.GymException.GymByNameNotFoundException;
 import com.julien.sportapi.repository.GymRepository;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-@NoArgsConstructor
-public class GymDaoInH2 implements GymDao{
+public class GymDaoInDB implements GymDao{
     private GymRepository gymRepository;
 
-    public GymDaoInH2(GymRepository gymRepository) {
+    public GymDaoInDB(GymRepository gymRepository) {
         this.gymRepository = gymRepository;
     }
 
@@ -24,12 +24,12 @@ public class GymDaoInH2 implements GymDao{
 
     @Override
     public Gym findByGymName(String gymName) {
-        return gymRepository.findByGymName(gymName);
+        return gymRepository.findByGymName(gymName).orElseThrow(() -> new GymByNameNotFoundException(gymName));
     }
 
     @Override
     public Gym findByGymId(UUID gymId) {
-        return gymRepository.findById(gymId).orElseThrow(RuntimeException::new);
+        return gymRepository.findById(gymId).orElseThrow(() -> new GymByIdNotFoundException(gymId));
     }
 
     @Override
@@ -47,7 +47,6 @@ public class GymDaoInH2 implements GymDao{
         Gym currentGym = gymRepository.getById(gym.getGymID());
         currentGym.setGymName(gym.getGymName());
         currentGym.setGymLocation(gym.getGymLocation());
-
         gymRepository.save(currentGym);
     }
 }
