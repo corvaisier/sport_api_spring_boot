@@ -2,6 +2,7 @@ package com.julien.sportapi.service;
 
 import com.julien.sportapi.dao.User.UserDao;
 import com.julien.sportapi.domain.User;
+import com.julien.sportapi.exception.CoachException.CoachIdNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class UserService {
     public List<User> findAll() { return userDao.findAll();}
 
     public User findById(UUID userId) {
-        return userDao.findById(userId);
+        return userDao.findById(userId).orElseThrow(() -> new CoachIdNotFoundException(userId));
     }
 
     public void add(String userName, String userLogin, String userPassword, String userStatus) {
@@ -31,7 +32,7 @@ public class UserService {
     }
 
     public void delete (UUID userId) {
-        User userToDelete = userDao.findById(userId);
+        User userToDelete = userDao.findById(userId).orElseThrow(() -> new CoachIdNotFoundException(userId));
         userDao.delete(userToDelete);
         logger.info("delete user : {}", userToDelete);
     }

@@ -27,11 +27,11 @@ public class UserController {
     @ResponseBody
     User findById(@PathVariable UUID userId) { return userService.findById(userId);}
 
-    @PostMapping("")
+    @PostMapping("/sign-up")
     @ResponseStatus(code = HttpStatus.CREATED)
     void add(@RequestParam String userName, String userLogin, String userPassword, String userStatus) { userService.add(userName, userLogin, userPassword, userStatus);}
 
-    @DeleteMapping("")
+    @DeleteMapping("/admin")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
     void delete(UUID userId) { userService.delete(userId);}

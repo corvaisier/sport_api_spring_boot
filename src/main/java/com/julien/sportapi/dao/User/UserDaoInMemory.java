@@ -6,6 +6,7 @@ import com.julien.sportapi.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -22,8 +23,8 @@ public class UserDaoInMemory implements UserDao{
     }
 
     @Override
-    public User findById(UUID userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new CoachIdNotFoundException(userId));
+    public Optional<User> findById(UUID userId) {
+        return userRepository.findById(userId);
     }
 
     @Override

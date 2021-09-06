@@ -38,20 +38,20 @@ public class CoachController {
         return coachService.findById(coachId);
     }
 
-    @PostMapping("")
+    @PostMapping("/admin")
     @ResponseStatus(code = HttpStatus.CREATED)
     void add(@RequestParam String coachName) {
         coachService.add(coachName);
     }
 
-     @DeleteMapping("")
+     @DeleteMapping("/admin")
      @ResponseStatus(code = HttpStatus.CREATED)
      @ResponseBody
      void delete(UUID coachId) {
         coachService.delete(coachId);
     }
 
-    @PatchMapping("")
+    @PatchMapping("/admin")
     @ResponseStatus(code = HttpStatus.CREATED)
     void update(@RequestParam UUID coachId, String newCoachName) {
         coachService.update(coachId, newCoachName);
