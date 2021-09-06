@@ -46,8 +46,9 @@ public class CoachController {
 
      @DeleteMapping("")
      @ResponseStatus(code = HttpStatus.CREATED)
-     @ResponseBody void delete(Coach coach) {
-        coachService.delete(coach);
+     @ResponseBody
+     void delete(UUID coachId) {
+        coachService.delete(coachId);
     }
 
     @PatchMapping("")

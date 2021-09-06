@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Repository
 public class CoachDaoInDB implements CoachDao{
-    private CoachRepository coachRepository;
+    private final CoachRepository coachRepository;
 
     public CoachDaoInDB(CoachRepository coachRepository) {
         this.coachRepository = coachRepository;
@@ -39,9 +39,9 @@ public class CoachDaoInDB implements CoachDao{
         coachRepository.save(coach);
     }
 
-    public void delete(Coach coach) {
-        coachRepository.delete(coach);
-
+    public void delete(UUID coachId) {
+        Coach coachToDelete = coachRepository.findById(coachId).orElseThrow(() -> new CoachIdNotFoundException(coachId));
+        coachRepository.delete(coachToDelete);
     }
 
     @Override

@@ -10,6 +10,6 @@ public interface CoachDao {
     Coach findByName(String coachName);
     Coach findById(UUID coachId);
     void add(Coach coach);
-    void delete(Coach coach);
+    void delete(UUID coachId);
     void update(UUID coachId, String newCoachName);
 }

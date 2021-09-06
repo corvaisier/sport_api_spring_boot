@@ -2,8 +2,11 @@ package com.julien.sportapi.service;
 
 import com.julien.sportapi.dao.Coach.CoachDao;
 import com.julien.sportapi.domain.Coach;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.List;
 
@@ -11,23 +14,29 @@ import java.util.List;
 public class CoachService {
 
     private final CoachDao coachDao;
-    
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+
     public CoachService(CoachDao coachDao) {
         this.coachDao = coachDao;
     }
 
     public Coach add(String coachName) {
-        Coach newCoach = new Coach(UUID.randomUUID(), coachName);
+        Coach newCoach = new Coach(UUID.randomUUID(), coachName /*, new ArrayList<>()*/);
+        logger.info("create new coach : {}", newCoach);
         coachDao.add(newCoach);
         return newCoach;
     }
 
-    public void delete(Coach coach) {
-        coachDao.delete(coach);
+    public void delete(UUID coachId) {
+        Coach coachToDelete = coachDao.findById(coachId);
+        coachDao.delete(coachId);
+        logger.info("delete coach : {}", coachToDelete);
     }
 
     public void update(UUID coachId, String newCoachName) {
         coachDao.update(coachId, newCoachName);
+        logger.info("update coach : {}", coachId, newCoachName);
     }
 
     public List<Coach> findAll() {
