@@ -1,7 +1,7 @@
 package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Person;
-import com.julien.sportapi.dto.SignUp;
+import com.julien.sportapi.dto.SignUpPerson;
 import com.julien.sportapi.service.PersonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -32,7 +32,7 @@ public class PersonController {
     @PostMapping("/sign-up")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    void add(@RequestBody SignUp signUp) { personService.add(signUp);}
+    void add(@RequestBody SignUpPerson signUpPerson) { personService.add(signUpPerson);}
 
     @Secured("admin")
     @DeleteMapping("/{userId}")

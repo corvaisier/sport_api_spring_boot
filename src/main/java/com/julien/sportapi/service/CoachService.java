@@ -4,6 +4,7 @@ import com.julien.sportapi.dao.Coach.CoachDao;
 import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Person;
+import com.julien.sportapi.dto.SignUpCoach;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
 import com.julien.sportapi.exception.CoachException.CoachNameNotUniqException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
@@ -29,14 +30,17 @@ public class CoachService {
         this.personDao = personDao;
     }
 
-    public Coach add(String coachName) throws CoachNameNotUniqException {
-        if(coachDao.findByName(coachName).isEmpty()) {
-            throw new CoachNameNotUniqException(coachName);
+    public void add(SignUpCoach signUpCoach) throws CoachNameNotUniqException {
+        if(!coachDao.findByName(signUpCoach.getCoachName()).isEmpty()) {
+            throw new CoachNameNotUniqException(signUpCoach.getCoachName());
         } else {
-            Coach newCoach = new Coach(UUID.randomUUID(), coachName, new ArrayList<>());
+            Coach newCoach = Coach.builder()
+                    .coachId(UUID.randomUUID())
+                    .coachName(signUpCoach.getCoachName())
+                    .persons(new ArrayList<>())
+                    .build();
             coachDao.add(newCoach);
             logger.info("create new coach : {}", newCoach);
-            return newCoach;
         }
     }
 

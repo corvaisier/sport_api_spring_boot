@@ -1,6 +1,7 @@
 package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Coach;
+import com.julien.sportapi.dto.SignUpCoach;
 import com.julien.sportapi.service.CoachService;
 
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,7 @@ public class CoachController {
     @PostMapping("/sign-up")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    void add(@RequestBody String coachName) { coachService.add(coachName);}
+    void add(@RequestBody SignUpCoach signUpCoach) { coachService.add(signUpCoach);}
 
      @DeleteMapping("")
      @ResponseStatus(code = HttpStatus.CREATED)
