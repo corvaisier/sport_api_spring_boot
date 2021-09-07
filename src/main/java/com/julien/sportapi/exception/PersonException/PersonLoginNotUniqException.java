@@ -1,9 +1,12 @@
 package com.julien.sportapi.exception.PersonException;
 
-import java.util.UUID;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-public class UserLoginNotUniqException extends RuntimeException{
-    public UserLoginNotUniqException(String error) {
-        super(error);
+@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+public class PersonLoginNotUniqException extends RuntimeException{
+
+    public PersonLoginNotUniqException(String login) {
+        super("This login is not uniq :" + login);
     }
 }
