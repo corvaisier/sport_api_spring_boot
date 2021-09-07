@@ -1,5 +1,6 @@
 package com.julien.sportapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,11 @@ public class Coach {
     @org.hibernate.annotations.Type(type = "uuid-char")
     private UUID coachId;
     private String coachName;
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private List<Gym> coachesInGym = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "coach_person",
+            joinColumns = @JoinColumn(name = "coach_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id"))
+    private List<Person> persons;
 
 }

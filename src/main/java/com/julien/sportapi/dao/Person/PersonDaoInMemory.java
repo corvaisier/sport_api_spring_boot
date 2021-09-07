@@ -28,7 +28,7 @@ public class PersonDaoInMemory implements PersonDao {
 
     @Override
     public Optional<Person> findByUserLogin(String userLogin) {
-        return userRepository.findByUserLogin(userLogin);
+        return userRepository.findByPersonLogin(userLogin);
     }
 
     @Override
@@ -39,5 +39,10 @@ public class PersonDaoInMemory implements PersonDao {
     @Override
     public void delete(Person user) {
         userRepository.delete(user);
+    }
+
+    @Override
+    public void update(Person person) {
+        userRepository.save(person);
     }
 }

@@ -12,5 +12,5 @@ public interface PersonDao {
     Optional<Person> findByUserLogin(String userLogin);
     void add(Person user);
     void delete(Person user);
-//    void update(UUID userId, String );
+    void update(Person person );
 }

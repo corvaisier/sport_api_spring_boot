@@ -4,8 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,8 +16,6 @@ public class Gym {
     private UUID gymID;
     private String gymName;
     private String gymLocation;
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private List<Coach> coachesInGym = new ArrayList<>();
 
     public Gym(UUID gym_ID, String gym_Name, String gym_Location) {
         this.gymID = gym_ID;

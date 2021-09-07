@@ -27,7 +27,7 @@ public class CoachController {
     @GetMapping("/name/{coachName}")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    Coach findByName(@PathVariable String coachName) {
+    List<Coach> findByName(@PathVariable String coachName) {
         return coachService.findByName(coachName);
     }
 
@@ -38,23 +38,28 @@ public class CoachController {
         return coachService.findById(coachId);
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/sign-up")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void add(@RequestParam String coachName) {
-        coachService.add(coachName);
-    }
+    @ResponseBody
+    void add(@RequestBody String coachName) { coachService.add(coachName);}
 
-     @DeleteMapping("/admin")
+     @DeleteMapping("")
      @ResponseStatus(code = HttpStatus.CREATED)
      @ResponseBody
-     void delete(UUID coachId) {
+     void delete(@RequestBody UUID coachId) {
         coachService.delete(coachId);
+    }
+
+    @PostMapping("/attach")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void addCoach(@RequestBody UUID personId, @RequestBody UUID coachId) {
+        coachService.attachPerson(personId, coachId);
     }
 
     @PatchMapping("/admin")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void update(@RequestParam UUID coachId, String newCoachName) {
-        coachService.update(coachId, newCoachName);
+    void update(@RequestBody Coach coach) {
+        coachService.update(coach);
     }
 
 }

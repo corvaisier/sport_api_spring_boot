@@ -17,11 +17,11 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userLogin) throws UsernameNotFoundException {
-        return userRepository.findByUserLogin(userLogin)
+        return userRepository.findByPersonLogin(userLogin)
                 .map(u -> User.builder()
-                                .username(u.getUserLogin())
-                                .password(u.getUserPassword())
-                                .roles(u.getUserStatus())
+                                .username(u.getPersonLogin())
+                                .password(u.getPersonPassword())
+                                .roles(u.getPersonStatus())
                                 .build())
                 .orElseThrow(() -> new UsernameNotFoundException(userLogin));
 

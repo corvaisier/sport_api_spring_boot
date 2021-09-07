@@ -1,14 +1,14 @@
 package com.julien.sportapi.dao.Coach;
 
 import com.julien.sportapi.domain.Coach;
-import com.julien.sportapi.exception.CoachException.CoachByNameNotFoundException;
-import com.julien.sportapi.exception.CoachException.CoachIdNotFoundException;
+import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
 
 import com.julien.sportapi.repository.CoachRepository;
 
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -25,13 +25,13 @@ public class CoachDaoInDB implements CoachDao{
     }
 
     @Override
-    public Coach findByName(String coachName) {
-        return coachRepository.findByCoachName(coachName).orElseThrow(() -> new CoachByNameNotFoundException(coachName));
+    public List<Coach> findByName(String coachName) {
+        return coachRepository.findByCoachName(coachName);
     }
 
     @Override
-    public Coach findById(UUID coachId) {
-        return coachRepository.findById(coachId).orElseThrow(() -> new CoachIdNotFoundException(coachId));
+    public Optional<Coach> findById(UUID coachId) {
+        return coachRepository.findById(coachId);
     }
 
     @Override
@@ -40,14 +40,12 @@ public class CoachDaoInDB implements CoachDao{
     }
 
     public void delete(UUID coachId) {
-        Coach coachToDelete = coachRepository.findById(coachId).orElseThrow(() -> new CoachIdNotFoundException(coachId));
+        Coach coachToDelete = coachRepository.findById(coachId).orElseThrow(() -> new CoachByIdNotFoundException(coachId));
         coachRepository.delete(coachToDelete);
     }
 
     @Override
-    public void update(UUID coachId, String newCoachName) {
-        Coach currentCoach = coachRepository.findById(coachId).orElseThrow(() -> new CoachIdNotFoundException(coachId));
-        currentCoach.setCoachName(newCoachName);
-        coachRepository.save(currentCoach);
+    public void update(Coach coach) {
+        coachRepository.save(coach);
     }
 }
