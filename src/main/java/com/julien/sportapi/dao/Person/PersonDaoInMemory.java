@@ -28,7 +28,12 @@ public class PersonDaoInMemory implements PersonDao {
 
     @Override
     public List<Person> findByName(String name) {
-        return userRepository.findByPersonName(name);
+        return userRepository.findByName(name);
+    }
+
+    @Override
+    public List<Person> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override

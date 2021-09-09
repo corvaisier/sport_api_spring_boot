@@ -32,16 +32,17 @@ public class PersonService {
     }
 
     public void add(SignUpPerson signUpPerson) throws PersonLoginNotUniqException {
-        if(personDao.findByUserLogin(signUpPerson.getPersonLogin()).isPresent()) {
-            throw new PersonLoginNotUniqException(signUpPerson.getPersonLogin());
+        if(!personDao.findByEmail(signUpPerson.getEmail()).isEmpty()) {
+            throw new PersonLoginNotUniqException(signUpPerson.getEmail());
         }
         else {
             Person newPerson = Person.builder()
-                    .personId(UUID.randomUUID())
-                    .personName(signUpPerson.getPersonName())
-                    .personLogin(signUpPerson.getPersonLogin())
-                    .personPassword(passwordEncoder.encode(signUpPerson.getPersonPassword()))
-                    .personStatus(signUpPerson.getPersonStatus())
+                    .id(UUID.randomUUID())
+                    .name(signUpPerson.getName())
+                    .firstName(signUpPerson.getFirstName())
+                    .email(signUpPerson.getEmail())
+                    .password(passwordEncoder.encode(signUpPerson.getPassword()))
+                    .status("customer")
                     .coaches(new ArrayList<>())
                     .build();
             personDao.add(newPerson);

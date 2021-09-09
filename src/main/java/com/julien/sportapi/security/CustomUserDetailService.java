@@ -9,21 +9,23 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
-    private final PersonRepository userRepository;
+    private final PersonRepository personRepository;
 
-    public CustomUserDetailService(PersonRepository userRepository) {
-        this.userRepository = userRepository;
+    public CustomUserDetailService(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String userLogin) throws UsernameNotFoundException {
-        return userRepository.findByPersonLogin(userLogin)
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return personRepository.findByEmail(email)
+                .stream()
                 .map(u -> User.builder()
-                                .username(u.getPersonLogin())
-                                .password(u.getPersonPassword())
-                                .roles(u.getPersonStatus())
+                                .username(u.getEmail())
+                                .password(u.getPassword())
+                                .roles(u.getStatus())
                                 .build())
-                .orElseThrow(() -> new UsernameNotFoundException(userLogin));
+                                .findFirst()
+                                 .orElseThrow(() -> new UsernameNotFoundException(email));
 
     }
 }

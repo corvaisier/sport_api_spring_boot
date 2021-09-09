@@ -11,12 +11,15 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping(
+        value ="/person",
+        produces = { "application/json"}
+)
 public class PersonController {
     private final PersonService personService;
 
-    public PersonController(PersonService userService) {
-        this.personService = userService;
+    public PersonController(PersonService personService) {
+        this.personService = personService;
     }
 
     @GetMapping("")
@@ -24,20 +27,15 @@ public class PersonController {
     @ResponseBody
     List<Person> findAll() { return personService.findAll();}
 
-    @GetMapping("/{userId}")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    @ResponseBody
-    Person findById(@PathVariable UUID userId) { return personService.findById(userId);}
-
     @PostMapping("/sign-up")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
     void add(@RequestBody SignUpPerson signUpPerson) { personService.add(signUpPerson);}
 
-    @Secured("admin")
-    @DeleteMapping("/{userId}")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    void delete(@PathVariable UUID userId) { personService.delete(userId);}
+//    @Secured("admin")
+//    @DeleteMapping("/{userId}")
+//    @ResponseStatus(code = HttpStatus.CREATED)
+//    void delete(@PathVariable UUID id) { personService.delete(id);}
 
 }
 

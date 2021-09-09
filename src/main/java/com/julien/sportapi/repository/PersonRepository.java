@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PersonRepository extends JpaRepository<Person, UUID> {
-    List<Person> findByPersonName(String personName);
-    Optional<Person> findByPersonLogin(String personLogin);
-    Optional<Person> findPersonByCoaches(Coach coach);
+    List<Person> findByEmail(String email);
+    List<Person> findByName(String name);
+
 }
 
