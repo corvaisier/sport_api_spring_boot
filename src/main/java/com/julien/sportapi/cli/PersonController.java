@@ -1,14 +1,12 @@
 package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Person;
-import com.julien.sportapi.dto.SignUpPerson;
+import com.julien.sportapi.dto.person.SignUpPerson;
 import com.julien.sportapi.service.PersonService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(

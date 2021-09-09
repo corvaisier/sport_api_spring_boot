@@ -2,9 +2,9 @@ package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Person;
-import com.julien.sportapi.dto.AttachCoachPerson;
-import com.julien.sportapi.dto.SignUpCoach;
-import com.julien.sportapi.dto.UuId;
+import com.julien.sportapi.dto.coach.AttachCoachPerson;
+import com.julien.sportapi.dto.coach.SignUpCoach;
+import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.service.CoachService;
 
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/coach")
+@RequestMapping(
+        value ="/coach",
+        produces = { "application/json"}
+)
 public class CoachController {
     private final CoachService coachService;
 
@@ -28,12 +31,12 @@ public class CoachController {
         return coachService.findAll();
     }
 
-    @GetMapping("/name/{coachName}")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    @ResponseBody
-    List<Coach> findByName(@PathVariable String coachName) {
-        return coachService.findByName(coachName);
-    }
+//    @GetMapping("/name/{name}")
+//    @ResponseStatus(code = HttpStatus.CREATED)
+//    @ResponseBody
+//    List<Coach> findByName(@PathVariable String name) {
+//        return coachService.findByName(name);
+//    }
 
     @GetMapping("/findCoachById")
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -49,10 +52,10 @@ public class CoachController {
         return coachService.findPerson(id);
     }
 
-    @PostMapping("/sign-up")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    @ResponseBody
-    void add(@RequestBody SignUpCoach signUpCoach) { coachService.add(signUpCoach);}
+//    @PostMapping("/sign-up")
+//    @ResponseStatus(code = HttpStatus.CREATED)
+//    @ResponseBody
+//    void add(@RequestBody SignUpCoach signUpCoach) { coachService.add(signUpCoach);}
 
     @DeleteMapping("")
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -67,9 +70,9 @@ public class CoachController {
         coachService.attachPerson(attachCoachPerson);
     }
 
-    @PatchMapping("/admin")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    void update(@RequestBody Coach coach) {
-        coachService.update(coach);
-    }
+//    @PatchMapping("/admin")
+//    @ResponseStatus(code = HttpStatus.CREATED)
+//    void update(@RequestBody Coach coach) {
+//        coachService.update(coach);
+//    }
 }

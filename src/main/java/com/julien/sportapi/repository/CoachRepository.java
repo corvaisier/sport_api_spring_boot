@@ -10,5 +10,5 @@ import java.util.UUID;
 
 public interface CoachRepository extends JpaRepository<Coach, UUID> {
 
-    List<Coach> findByCoachName(String coachName);
+    List<Coach> findByName(String Name);
 }

@@ -2,7 +2,7 @@ package com.julien.sportapi.service;
 
 import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Person;
-import com.julien.sportapi.dto.SignUpPerson;
+import com.julien.sportapi.dto.person.SignUpPerson;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
 import com.julien.sportapi.exception.PersonException.PersonLoginNotUniqException;
 import lombok.RequiredArgsConstructor;
