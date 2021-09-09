@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public interface PersonDao {
     List<Person> findAll();
-    Optional<Person> findById(UUID userId);
-    Optional<Person> findByUserLogin(String userLogin);
-    void add(Person user);
-    void delete(Person user);
+    Optional<Person> findById(UUID id);
+    Optional<Person> findByUserName(String name);
+    void add(Person person);
+    void delete(Person person);
     void update(Person person );
 }
