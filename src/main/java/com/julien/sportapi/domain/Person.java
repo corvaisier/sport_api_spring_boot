@@ -20,12 +20,13 @@ public class Person {
     @Id
     @Column(length = 36)
     @org.hibernate.annotations.Type(type = "uuid-char")
-    private UUID personId;
-    private String personName;
+    private UUID id;
+    private String name;
+    private String firstName;
     @Column(unique = true)
-    private String personLogin;
-    private String personPassword;
-    private String personStatus;
+    private String email;
+    private String password;
     @ManyToMany(mappedBy = "persons")
     private List<Coach> coaches;
 }
+
