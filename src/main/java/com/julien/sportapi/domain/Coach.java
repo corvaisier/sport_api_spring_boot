@@ -1,5 +1,6 @@
 package com.julien.sportapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class Coach {
             name = "coach_person",
             joinColumns = @JoinColumn(name = "coach_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id"))
+    @JsonIgnore
     private List<Person> persons;
 
 }

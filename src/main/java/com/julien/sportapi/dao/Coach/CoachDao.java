@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.julien.sportapi.domain.Coach;
+import com.julien.sportapi.domain.Person;
 
 public interface CoachDao {
     List<Coach> findAll();

@@ -1,6 +1,7 @@
 package com.julien.sportapi.dao.Coach;
 
 import com.julien.sportapi.domain.Coach;
+import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
 
 import com.julien.sportapi.repository.CoachRepository;
@@ -33,6 +34,7 @@ public class CoachDaoInDB implements CoachDao{
     public Optional<Coach> findById(UUID coachId) {
         return coachRepository.findById(coachId);
     }
+
 
     @Override
     public void add (Coach coach) {

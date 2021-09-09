@@ -4,7 +4,9 @@ import com.julien.sportapi.dao.Coach.CoachDao;
 import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Person;
+import com.julien.sportapi.dto.AttachCoachPerson;
 import com.julien.sportapi.dto.SignUpCoach;
+import com.julien.sportapi.dto.UuId;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
 import com.julien.sportapi.exception.CoachException.CoachNameNotUniqException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
@@ -68,14 +70,19 @@ public class CoachService {
         return coachDao.findByName(coachName);
     }
 
-    public Coach findById(UUID coachId) {
-        return coachDao.findById(coachId).orElseThrow(() -> new CoachByIdNotFoundException(coachId));
+    public Coach findById(UuId id) {
+        return coachDao.findById(id.getId()).orElseThrow(() -> new CoachByIdNotFoundException(id.getId()));
+    }
+
+    public List<Person> findPerson(UuId id) {
+        Coach coach = coachDao.findById(id.getId()).orElseThrow(() -> new CoachByIdNotFoundException(id.getId()));
+        return coach.getPersons();
     }
 
     @Transactional
-    public void attachPerson(UUID personId, UUID coachId) {
-        Coach coach = coachDao.findById(coachId).orElseThrow(() -> new CoachByIdNotFoundException(coachId));
-        Person person = personDao.findById(personId).orElseThrow(() -> new PersonByIdNotFoundException(personId));
+    public void attachPerson(AttachCoachPerson attachCoachPerson) {
+        Coach coach = coachDao.findById(attachCoachPerson.getCoachId()).orElseThrow(() -> new CoachByIdNotFoundException(attachCoachPerson.getCoachId()));
+        Person person = personDao.findById(attachCoachPerson.getPersonId()).orElseThrow(() -> new PersonByIdNotFoundException(attachCoachPerson.getPersonId()));
         coach.getPersons().add(person);
     }
 
