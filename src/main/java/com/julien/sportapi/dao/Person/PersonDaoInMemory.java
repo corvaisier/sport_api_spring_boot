@@ -12,8 +12,8 @@ import java.util.UUID;
 public class PersonDaoInMemory implements PersonDao {
     private final PersonRepository userRepository;
 
-    public PersonDaoInMemory(PersonRepository userRepository) {
-        this.userRepository = userRepository;
+    public PersonDaoInMemory(PersonRepository personRepository) {
+        this.userRepository = personRepository;
     }
 
     @Override
@@ -22,23 +22,23 @@ public class PersonDaoInMemory implements PersonDao {
     }
 
     @Override
-    public Optional<Person> findById(UUID userId) {
-        return userRepository.findById(userId);
+    public Optional<Person> findById(UUID id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    public Optional<Person> findByUserLogin(String userLogin) {
-        return userRepository.findByPersonLogin(userLogin);
+    public List<Person> findByName(String name) {
+        return userRepository.findByPersonName(name);
     }
 
     @Override
-    public void add(Person user) {
-        userRepository.save(user);
+    public void add(Person person) {
+        userRepository.save(person);
     }
 
     @Override
-    public void delete(Person user) {
-        userRepository.delete(user);
+    public void delete(Person person) {
+        userRepository.delete(person);
     }
 
     @Override

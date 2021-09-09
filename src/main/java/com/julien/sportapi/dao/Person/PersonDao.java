@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface PersonDao {
     List<Person> findAll();
     Optional<Person> findById(UUID id);
-    Optional<Person> findByUserName(String name);
+    List<Person> findByName(String name);
     void add(Person person);
     void delete(Person person);
     void update(Person person );
