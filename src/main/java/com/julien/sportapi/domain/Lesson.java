@@ -34,4 +34,6 @@ public class Lesson {
     private String difficulty;
     @ManyToMany(mappedBy = "lessons")
     private List<Person> persons;
+    @ManyToOne
+    private Coach coach;
 }
