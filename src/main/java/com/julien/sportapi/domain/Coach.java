@@ -34,5 +34,8 @@ public class Coach {
             inverseJoinColumns = @JoinColumn(name = "person_id"))
     @JsonIgnore
     private List<Person> persons;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Lesson> lessons;
 
 }
