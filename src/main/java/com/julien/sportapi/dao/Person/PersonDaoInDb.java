@@ -9,45 +9,41 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public class PersonDaoInMemory implements PersonDao {
-    private final PersonRepository userRepository;
+public class PersonDaoInDb implements PersonDao {
+    private final PersonRepository personRepository;
 
-    public PersonDaoInMemory(PersonRepository personRepository) {
-        this.userRepository = personRepository;
+    public PersonDaoInDb(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 
     @Override
     public List<Person> findAll() {
-        return userRepository.findAll();
+        return personRepository.findAll();
     }
 
     @Override
     public Optional<Person> findById(UUID id) {
-        return userRepository.findById(id);
+        return personRepository.findById(id);
     }
 
     @Override
     public List<Person> findByName(String name) {
-        return userRepository.findByName(name);
+        return personRepository.findByName(name);
     }
 
     @Override
     public List<Person> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return personRepository.findByEmail(email);
     }
 
     @Override
     public void add(Person person) {
-        userRepository.save(person);
+        personRepository.save(person);
     }
 
     @Override
     public void delete(Person person) {
-        userRepository.delete(person);
+        personRepository.delete(person);
     }
 
-    @Override
-    public void update(Person person) {
-        userRepository.save(person);
-    }
 }

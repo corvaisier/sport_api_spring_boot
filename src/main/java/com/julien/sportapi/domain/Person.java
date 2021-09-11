@@ -1,6 +1,7 @@
 package com.julien.sportapi.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,5 +41,12 @@ public class Person {
     private String status;
     @ManyToMany(mappedBy = "persons")
     private List<Coach> coaches;
+    @ManyToMany
+    @JoinTable(
+            name = "person_lesson",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "lesson_id"))
+    @JsonIgnore
+    private List<Lesson> lessons;
 }
 

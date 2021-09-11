@@ -49,10 +49,17 @@ public class PersonService {
             logger.info("create new user : {}", newPerson);
         }
     }
+    
+    public void update(UUID id) {
+        Person personToUpdate = personDao.findById(id).orElseThrow(() -> new PersonByIdNotFoundException(id));
+        personDao.add(personToUpdate);
+        logger.info("delete user : {}", personToUpdate);
 
-    public void delete (UUID personId) {
-        Person userToDelete = personDao.findById(personId).orElseThrow(() -> new PersonByIdNotFoundException(personId));
-        personDao.delete(userToDelete);
-        logger.info("delete user : {}", userToDelete);
+    }
+
+    public void delete (UUID id) {
+        Person personToDelete = personDao.findById(id).orElseThrow(() -> new PersonByIdNotFoundException(id));
+        personDao.delete(personToDelete);
+        logger.info("delete user : {}", personToDelete);
     }
 }

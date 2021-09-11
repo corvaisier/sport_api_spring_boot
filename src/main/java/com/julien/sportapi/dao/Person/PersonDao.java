@@ -13,5 +13,4 @@ public interface PersonDao {
     List<Person> findByEmail(String email);
     void add(Person person);
     void delete(Person person);
-    void update(Person person );
 }
