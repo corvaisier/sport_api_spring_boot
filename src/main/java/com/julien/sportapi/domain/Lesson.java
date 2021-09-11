@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.UUID;
@@ -37,4 +34,6 @@ public class Lesson {
     private String difficulty;
     @ManyToMany(mappedBy = "lessons")
     private List<Person> persons;
+    @ManyToOne
+    private Coach coach;
 }
