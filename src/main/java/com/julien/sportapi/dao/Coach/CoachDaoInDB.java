@@ -26,7 +26,7 @@ public class CoachDaoInDB implements CoachDao{
     }
 
     @Override
-    public List<Coach> findByName(String name) {
+    public Coach findByName(String name) {
         return coachRepository.findByName(name);
     }
 

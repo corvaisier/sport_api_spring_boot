@@ -50,11 +50,11 @@ public class PersonService {
             logger.info("create new user : {}", newPerson);
         }
     }
-    
+    //TODO refacto
     public void update(UuId id) {
         Person personToUpdate = personDao.findById(id.getId()).orElseThrow(() -> new PersonByIdNotFoundException(id.getId()));
         personDao.add(personToUpdate);
-        logger.info("delete user : {}", personToUpdate);
+        logger.info("update user : {}", personToUpdate);
 
     }
 

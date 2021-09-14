@@ -12,6 +12,7 @@ import com.julien.sportapi.exception.CoachException.CoachNameNotUniqException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,9 +23,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class CoachService {
 
     private final CoachDao coachDao;
@@ -33,9 +33,9 @@ public class CoachService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public void add(SignUpCoach signUpCoach) throws CoachNameNotUniqException {
-        if(!coachDao.findByName(signUpCoach.getName()).isEmpty()) {
+        if(coachDao.findByName(signUpCoach.getName()) != null)
             throw new CoachNameNotUniqException(signUpCoach.getName());
-        } else {
+        else {
             Coach newCoach = Coach.builder()
                     .id(UUID.randomUUID())
                     .name(signUpCoach.getName())
@@ -67,7 +67,7 @@ public class CoachService {
         return coachDao.findAll();
     }
 
-    public List<Coach> findByName(String name) {
+    public Coach findByName(String name) {
         return coachDao.findByName(name);
     }
 
