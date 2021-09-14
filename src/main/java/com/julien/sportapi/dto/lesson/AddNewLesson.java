@@ -1,4 +1,4 @@
-package com.julien.sportapi.dto.Lesson;
+package com.julien.sportapi.dto.lesson;
 
 import lombok.Data;
 

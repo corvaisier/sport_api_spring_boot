@@ -2,6 +2,7 @@ package com.julien.sportapi.service;
 
 import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Person;
+import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.dto.person.SignUpPerson;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
 import com.julien.sportapi.exception.PersonException.PersonLoginNotUniqException;
@@ -50,15 +51,15 @@ public class PersonService {
         }
     }
     
-    public void update(UUID id) {
-        Person personToUpdate = personDao.findById(id).orElseThrow(() -> new PersonByIdNotFoundException(id));
+    public void update(UuId id) {
+        Person personToUpdate = personDao.findById(id.getId()).orElseThrow(() -> new PersonByIdNotFoundException(id.getId()));
         personDao.add(personToUpdate);
         logger.info("delete user : {}", personToUpdate);
 
     }
 
-    public void delete (UUID id) {
-        Person personToDelete = personDao.findById(id).orElseThrow(() -> new PersonByIdNotFoundException(id));
+    public void delete (UuId id) {
+        Person personToDelete = personDao.findById(id.getId()).orElseThrow(() -> new PersonByIdNotFoundException(id.getId()));
         personDao.delete(personToDelete);
         logger.info("delete user : {}", personToDelete);
     }

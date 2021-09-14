@@ -2,9 +2,9 @@ package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Lesson;
-import com.julien.sportapi.domain.Person;
-import com.julien.sportapi.dto.coach.AttachCoachPerson;
+import com.julien.sportapi.dto.coach.AddPersonToCoachList;
 import com.julien.sportapi.dto.general.UuId;
+import com.julien.sportapi.dto.lesson.AddNewLesson;
 import com.julien.sportapi.service.CoachService;
 
 import com.julien.sportapi.service.LessonService;
@@ -42,22 +42,22 @@ public class CoachController {
     @GetMapping("/findLessonByDay")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    List<Person> findPerson(@RequestBody String day) {
-        return coachService.findLessonByDay(day);
+    List<Lesson> findLessonByDay(@RequestBody String day) {
+        return lessonService.findLessonByDay(day);
     }
 
-    @GetMapping("/findLessonByHour")
+    @GetMapping("/findLessonByhour")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    List<Person> findPerson(@RequestBody String hour) {
-        return coachService.findLessonByhour(hour);
+    List<Lesson> findLessonByhour(@RequestBody String hour) {
+        return lessonService.findLessonByhour(hour);
     }
 
-    @GetMapping("/findPersonnalLessonByHour")
+    @GetMapping("/findLessonByCoachId")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    List<Person> findPerson(@RequestBody UuId id) {
-        return coachService.findLessonByCoachId(id);
+    List<Lesson> findLessonByCoachId(@RequestBody UuId id) {
+        return lessonService.findLessonByCoachId(id);
     }
 
     @PostMapping("/addPersonToCoachList")
@@ -68,21 +68,21 @@ public class CoachController {
 
     @PostMapping("/addLesson")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void addLesson(@RequestBody AddLesson addLesson) {
-        lessonService.add(addLesson);
+    public void addLesson(@RequestBody AddNewLesson addNewLesson) {
+        lessonService.addLesson(addNewLesson);
     }
 
     @PatchMapping("/updateLesson")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void update(@RequestBody Lesson lesson) {
-        lessonService.update(lesson);
+    void update(@RequestBody UuId id) {
+        lessonService.updateLesson(id);
     }
 
     @DeleteMapping("/deleteLesson")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
     void delete(@RequestBody UuId id) {
-        lessonService.delete(id);
+        lessonService.deleteLesson(id);
     }
 
     @PatchMapping("/update")
