@@ -4,7 +4,7 @@ import com.julien.sportapi.dao.Coach.CoachDao;
 import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Person;
-import com.julien.sportapi.dto.coach.AttachCoachPerson;
+import com.julien.sportapi.dto.coach.AddPersonToCoachList;
 import com.julien.sportapi.dto.coach.SignUpCoach;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
@@ -47,13 +47,13 @@ public class CoachService {
         }
     }
 
-    public void delete(UUID coachId) throws CoachByIdNotFoundException{
-        if(coachDao.findById(coachId).isPresent()) {
-            coachDao.delete(coachId);
-            logger.info("delete coach : {}", coachId);
+    public void delete(UuId id) throws CoachByIdNotFoundException{
+        if(coachDao.findById(id.getId()).isPresent()) {
+            coachDao.delete(id.getId());
+            logger.info("delete coach : {}", id.getId());
         }
         else {
-            throw new CoachByIdNotFoundException(coachId);
+            throw new CoachByIdNotFoundException(id.getId());
         }
 
     }
@@ -81,9 +81,9 @@ public class CoachService {
     }
 
     @Transactional
-    public void attachPerson(AttachCoachPerson attachCoachPerson) {
-        Coach coach = coachDao.findById(attachCoachPerson.getCoachId()).orElseThrow(() -> new CoachByIdNotFoundException(attachCoachPerson.getCoachId()));
-        Person person = personDao.findById(attachCoachPerson.getPersonId()).orElseThrow(() -> new PersonByIdNotFoundException(attachCoachPerson.getPersonId()));
+    public void attachPerson(AddPersonToCoachList addPersonToCoachList) {
+        Coach coach = coachDao.findById(addPersonToCoachList.getCoachId()).orElseThrow(() -> new CoachByIdNotFoundException(addPersonToCoachList.getCoachId()));
+        Person person = personDao.findById(addPersonToCoachList.getPersonId()).orElseThrow(() -> new PersonByIdNotFoundException(addPersonToCoachList.getPersonId()));
         coach.getPersons().add(person);
     }
 

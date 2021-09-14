@@ -36,6 +36,11 @@ public class LessonDaoInDb implements LessonDao{
     }
 
     @Override
+    public List<Lesson> findLessonByCoach_Id(UUID id) {
+        return lessonRepository.findLessonByCoach_Id(id);
+    }
+
+    @Override
     public Optional<Lesson> findById(UUID id) {
         return lessonRepository.findById(id);
     }

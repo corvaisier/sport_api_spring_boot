@@ -3,7 +3,8 @@ package com.julien.sportapi.service;
 
 import com.julien.sportapi.dao.Lesson.LessonDao;
 import com.julien.sportapi.domain.Lesson;
-import com.julien.sportapi.dto.Lesson.AddNewLesson;
+import com.julien.sportapi.dto.lesson.AddNewLesson;
+import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.exception.LessonException.LessonByIdNotFoundException;
 import com.julien.sportapi.exception.LessonException.LessonDateTimeNotValideException;
 import lombok.RequiredArgsConstructor;
@@ -28,19 +29,20 @@ public class LessonService {
         return lessonDao.findByName(name);
     }
 
-    public List<Lesson> findByDay(String day) {
+
+    public List<Lesson> findLessonByDay(String day) {
         return lessonDao.findByDay(day);
     }
 
-    public List<Lesson> findByHour(String hour) {
+    public List<Lesson> findLessonByhour(String hour) {
         return lessonDao.findByHour(hour);
     }
 
-    public Lesson findById(UUID id) {
-        return lessonDao.findById(id).orElseThrow(() -> new LessonByIdNotFoundException(id));
+    public List<Lesson> findLessonByCoachId(UuId id) {
+        return lessonDao.findLessonByCoach_Id(id.getId());
     }
 
-    public void add(AddNewLesson addNewLesson) throws LessonDateTimeNotValideException {
+    public void addLesson(AddNewLesson addNewLesson) throws LessonDateTimeNotValideException {
         if(!isLessonAvailable(addNewLesson)) {
             throw new LessonDateTimeNotValideException(addNewLesson.getHour(), addNewLesson.getDay() );
         } else {
@@ -56,20 +58,21 @@ public class LessonService {
         }
     }
 
-    public void delete(UUID id) {
-        Lesson lessonToDelete = lessonDao.findById(id).orElseThrow(() -> new LessonByIdNotFoundException(id));
+    public void deleteLesson(UuId id) {
+        Lesson lessonToDelete = lessonDao.findById(id.getId()).orElseThrow(() -> new LessonByIdNotFoundException(id.getId()));
         lessonDao.delete(lessonToDelete);
-        logger.info("delete lesson : {}" + lessonToDelete.getId());
+        logger.info("delete lesson : {}", id.getId());
 
     }
 
-    public void update(UUID id) {
-        Lesson lessonToUpdate = lessonDao.findById(id).orElseThrow(() -> new LessonByIdNotFoundException(id));
+    public void updateLesson(UuId id) {
+        Lesson lessonToUpdate = lessonDao.findById(id.getId()).orElseThrow(() -> new LessonByIdNotFoundException(id.getId()));
         lessonDao.add(lessonToUpdate);
-        logger.info("update lesson : {}" + lessonToUpdate.getId());
+        logger.info("update lesson : {}",  id.getId());
     }
 
     private Boolean isLessonAvailable(AddNewLesson addNewLesson) {
         return lessonDao.findByHour(addNewLesson.getHour()).isEmpty() && lessonDao.findByDay(addNewLesson.getDay()).isEmpty();
     }
+
 }

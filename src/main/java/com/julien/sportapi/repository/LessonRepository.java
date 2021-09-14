@@ -10,4 +10,5 @@ public interface LessonRepository extends JpaRepository<Lesson, UUID> {
         List<Lesson> findLessonByName(String name);
         List<Lesson> findLessonByDay(String day);
         List<Lesson> findLessonByHour(String hour);
+        List<Lesson> findLessonByCoach_Id(UUID id);
 }

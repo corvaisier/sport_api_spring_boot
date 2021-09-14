@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class AttachCoachPerson {
+public class AddPersonToCoachList {
     private UUID coachId;
     private UUID personId;
 }
