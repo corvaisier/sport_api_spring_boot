@@ -27,6 +27,8 @@ public class Coach {
     @Column(nullable = false)
     @NotBlank(message = "Password is mandatory")
     private String password;
+    @Column(nullable = false)
+    private String status;
     @ManyToMany
     @JoinTable(
             name = "coach_person",
