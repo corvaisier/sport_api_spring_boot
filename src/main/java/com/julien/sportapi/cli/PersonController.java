@@ -2,6 +2,7 @@ package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Lesson;
+import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.service.CoachService;
 import com.julien.sportapi.service.LessonService;
@@ -36,8 +37,8 @@ public class PersonController {
 
     @PatchMapping("/update")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void update(@RequestBody UuId id) {
-        personService.update(id);
+    void update(@RequestBody Person person) {
+        personService.update(person);
     }
 
     @DeleteMapping("")

@@ -9,7 +9,7 @@ import com.julien.sportapi.dto.coach.SignUpCoach;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
 import com.julien.sportapi.exception.CoachException.CoachByNameNotFoundException;
-import com.julien.sportapi.exception.CoachException.CoachForbiddenDeleteException;
+import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.CoachException.CoachPersonAlreadyExistException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -78,7 +78,7 @@ public class CoachServiceTest {
         doNothing().when(coachDao).delete(idTwo);
 
         assertThatThrownBy(() -> coachService.delete(uuIdTwo))
-                .isInstanceOf(CoachForbiddenDeleteException.class)
+                .isInstanceOf(EntityForbiddenDeleteException.class)
                 .hasMessage("This coach: " + uuIdTwo + " can't be changed ! ");
     }
 
@@ -91,14 +91,14 @@ public class CoachServiceTest {
         when(coachDao.findById(idTwo)).thenReturn(optionalCoach);
 
         when (coachDao.findById(idOne)).thenReturn(optionalCoach);
-        doNothing().when(coachDao).update(optionalCoach.get());
+        doNothing().when(coachDao).add(optionalCoach.get());
 
         coachService.update(coachOne);
-        verify(coachDao).update(coachOne);
+        verify(coachDao).add(coachOne);
 
         assertThatThrownBy(() -> coachService.update(coachTwo))
-                .isInstanceOf(CoachForbiddenDeleteException.class)
-                .hasMessage("This coach: " + uuIdTwo + " can't be changed ! ");
+                .isInstanceOf(EntityForbiddenDeleteException.class)
+                .hasMessage("This entity: " + uuIdTwo + " can't be changed ! ");
     }
 
     @Test

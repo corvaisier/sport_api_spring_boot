@@ -8,7 +8,7 @@ import com.julien.sportapi.dto.coach.AddPersonToCoachList;
 import com.julien.sportapi.dto.coach.SignUpCoach;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
-import com.julien.sportapi.exception.CoachException.CoachForbiddenDeleteException;
+import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.CoachException.CoachNameNotUniqException;
 import com.julien.sportapi.exception.CoachException.CoachPersonAlreadyExistException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
@@ -48,13 +48,13 @@ public class CoachService {
         }
     }
 
-    public void delete(UuId id) throws CoachForbiddenDeleteException {
+    public void delete(UuId id) throws EntityForbiddenDeleteException {
         Coach coachToDelete = findById(id);
         if (!coachToDelete.getStatus().equals("admin")) {
             coachDao.delete(id.getId());
             logger.info("delete coach : {}", id.getId());
         } else {
-            throw new CoachForbiddenDeleteException(id);
+            throw new EntityForbiddenDeleteException(id);
         }
     }
 
@@ -62,10 +62,10 @@ public class CoachService {
         Coach coachToUpdate = coachDao.findById(coach.getId()).orElseThrow(() -> new CoachByIdNotFoundException(coach.getId()));
         UuId id = new UuId(coach.getId());
         if (coach.getStatus().equals(coachToUpdate.getStatus())) {
-            coachDao.update(coach);
+            coachDao.add(coach);
             logger.info("update coach : {}", coach);
         } else {
-            throw new CoachForbiddenDeleteException(id);
+            throw new EntityForbiddenDeleteException(id);
         }
     }
 

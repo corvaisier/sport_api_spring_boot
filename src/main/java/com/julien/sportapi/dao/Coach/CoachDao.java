@@ -13,5 +13,4 @@ public interface CoachDao {
     Optional<Coach> findById(UUID coachId);
     void add(Coach coach);
     void delete(UUID coachId);
-    void update(Coach coach);
 }
