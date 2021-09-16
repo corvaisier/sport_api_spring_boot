@@ -25,8 +25,6 @@ public class PersonService {
     private final PasswordEncoder passwordEncoder;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-
-
     public List<Person> findAll() {
         return personDao.findAll();}
 
@@ -62,7 +60,6 @@ public class PersonService {
         } else {
             throw new EntityForbiddenDeleteException(id);
         }
-
     }
 
     public void delete (UuId id) {
