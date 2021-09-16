@@ -1,7 +1,6 @@
 package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Coach;
-import com.julien.sportapi.domain.Lesson;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.coach.SignUpCoach;
 import com.julien.sportapi.dto.general.UuId;
