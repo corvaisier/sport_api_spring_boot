@@ -8,10 +8,11 @@ import com.julien.sportapi.dto.coach.AddPersonToCoachList;
 import com.julien.sportapi.dto.coach.SignUpCoach;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
+import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.CoachException.CoachNameNotUniqException;
+import com.julien.sportapi.exception.CoachException.CoachPersonAlreadyExistException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,9 +23,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class CoachService {
 
     private final CoachDao coachDao;
@@ -33,41 +33,47 @@ public class CoachService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public void add(SignUpCoach signUpCoach) throws CoachNameNotUniqException {
-        if(!coachDao.findByName(signUpCoach.getName()).isEmpty()) {
+        if(coachDao.findByName(signUpCoach.getName()) != null)
             throw new CoachNameNotUniqException(signUpCoach.getName());
-        } else {
+        else {
             Coach newCoach = Coach.builder()
                     .id(UUID.randomUUID())
                     .name(signUpCoach.getName())
                     .password(passwordEncoder.encode(signUpCoach.getPassword()))
                     .persons(new ArrayList<>())
+                    .status("coach")
                     .build();
             coachDao.add(newCoach);
             logger.info("create new coach : {}", newCoach);
         }
     }
 
-    public void delete(UuId id) throws CoachByIdNotFoundException{
-        if(coachDao.findById(id.getId()).isPresent()) {
+    public void delete(UuId id) throws EntityForbiddenDeleteException {
+        Coach coachToDelete = findById(id);
+        if (!coachToDelete.getStatus().equals("admin")) {
             coachDao.delete(id.getId());
             logger.info("delete coach : {}", id.getId());
+        } else {
+            throw new EntityForbiddenDeleteException(id);
         }
-        else {
-            throw new CoachByIdNotFoundException(id.getId());
-        }
-
     }
 
     public void update(Coach coach) {
-        coachDao.update(coach);
-        logger.info("update coach : {}", coach);
+        Coach coachToUpdate = coachDao.findById(coach.getId()).orElseThrow(() -> new CoachByIdNotFoundException(coach.getId()));
+        UuId id = new UuId(coach.getId());
+        if (coach.getStatus().equals(coachToUpdate.getStatus())) {
+            coachDao.add(coach);
+            logger.info("update coach : {}", coach);
+        } else {
+            throw new EntityForbiddenDeleteException(id);
+        }
     }
 
     public List<Coach> findAll() {
         return coachDao.findAll();
     }
 
-    public List<Coach> findByName(String name) {
+    public Coach findByName(String name) {
         return coachDao.findByName(name);
     }
 
@@ -84,6 +90,9 @@ public class CoachService {
     public void attachPerson(AddPersonToCoachList addPersonToCoachList) {
         Coach coach = coachDao.findById(addPersonToCoachList.getCoachId()).orElseThrow(() -> new CoachByIdNotFoundException(addPersonToCoachList.getCoachId()));
         Person person = personDao.findById(addPersonToCoachList.getPersonId()).orElseThrow(() -> new PersonByIdNotFoundException(addPersonToCoachList.getPersonId()));
+        if(coach.getPersons().stream().anyMatch(c -> c.getId() == person.getId())) {
+            throw new CoachPersonAlreadyExistException(person.getId());
+        }
         coach.getPersons().add(person);
     }
 

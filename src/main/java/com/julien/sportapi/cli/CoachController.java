@@ -74,8 +74,8 @@ public class CoachController {
 
     @PatchMapping("/updateLesson")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void update(@RequestBody UuId id) {
-        lessonService.updateLesson(id);
+    void update(@RequestBody AddNewLesson lesson) {
+        lessonService.updateLesson(lesson);
     }
 
     @DeleteMapping("/deleteLesson")

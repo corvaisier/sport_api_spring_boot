@@ -4,6 +4,8 @@ import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.dto.person.SignUpPerson;
+import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
+import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
 import com.julien.sportapi.exception.PersonException.PersonLoginNotUniqException;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +30,8 @@ public class PersonService {
     public List<Person> findAll() {
         return personDao.findAll();}
 
-    public Person findById(UUID personId) {
-        return personDao.findById(personId).orElseThrow(() -> new PersonByIdNotFoundException(personId));
+    public Person findById(UuId personId) {
+        return personDao.findById(personId.getId()).orElseThrow(() -> new PersonByIdNotFoundException(personId.getId()));
     }
 
     public void add(SignUpPerson signUpPerson) throws PersonLoginNotUniqException {
@@ -50,17 +52,26 @@ public class PersonService {
             logger.info("create new user : {}", newPerson);
         }
     }
-    
-    public void update(UuId id) {
-        Person personToUpdate = personDao.findById(id.getId()).orElseThrow(() -> new PersonByIdNotFoundException(id.getId()));
-        personDao.add(personToUpdate);
-        logger.info("delete user : {}", personToUpdate);
+
+    public void update(Person person) {
+        Person personToUpdate = personDao.findById(person.getId()).orElseThrow(() -> new CoachByIdNotFoundException(person.getId()));
+        UuId id = new UuId(person.getId());
+        if (person.getStatus().equals(personToUpdate.getStatus())) {
+            personDao.add(person);
+            logger.info("update person : {}", person);
+        } else {
+            throw new EntityForbiddenDeleteException(id);
+        }
 
     }
 
     public void delete (UuId id) {
-        Person personToDelete = personDao.findById(id.getId()).orElseThrow(() -> new PersonByIdNotFoundException(id.getId()));
-        personDao.delete(personToDelete);
-        logger.info("delete user : {}", personToDelete);
+        Person personToDelete = findById(id);
+        if (!personToDelete.getStatus().equals("admin")) {
+            personDao.delete(personToDelete);
+            logger.info("delete user : {}", personToDelete);
+        } else {
+            throw new EntityForbiddenDeleteException(id);
+        }
     }
 }
