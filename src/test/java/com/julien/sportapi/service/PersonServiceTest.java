@@ -47,13 +47,11 @@ class PersonServiceTest {
 
     @Test
     void findById() {
-        UuId randomId = new UuId(UUID.randomUUID());
-
         when(personDao.findById(idOne)).thenReturn(Optional.of(personList.get(0)));
         when(personDao.findById(idTwo)).thenThrow(new PersonByIdNotFoundException(idTwo));
 
         MatcherAssert.assertThat(personService.findById(uuIdOne), equalTo(personList.get(0)));
-        assertThatThrownBy(() -> personService.findById(randomId))
+        assertThatThrownBy(() -> personService.findById(uuIdTwo))
                 .isInstanceOf(PersonByIdNotFoundException.class)
                 .hasMessage("This user id does not exist: " + idTwo);
     }
@@ -91,5 +89,21 @@ class PersonServiceTest {
 
     @Test
     void delete() {
+        Person personOne =  personList.get(0);
+        Optional<Person> optionalPerson = Optional.of(personOne);
+        when (personDao.findById(idOne)).thenReturn(optionalPerson);
+        doNothing().when(personDao).delete(optionalPerson.get());
+
+        personService.delete(uuIdOne);
+        verify(personDao).delete(personOne);
+
+        Person personTwo =  personList.get(1);
+        Optional<Person> optionalPersonTwo = Optional.of(personTwo);
+        when (personDao.findById(idTwo)).thenReturn(optionalPersonTwo);
+        doNothing().when(personDao).delete(optionalPersonTwo.get());
+
+        assertThatThrownBy(() -> personService.delete(uuIdTwo))
+                .isInstanceOf(EntityForbiddenDeleteException.class)
+                .hasMessage("This entity: " + uuIdTwo + " can't be changed ! ");
     }
 }

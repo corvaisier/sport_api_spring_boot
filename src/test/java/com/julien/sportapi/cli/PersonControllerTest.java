@@ -9,7 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,8 +22,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(CoachController.class)
-class CoachControllerTest {
+@ContextConfiguration
+@WebMvcTest(PersonController.class)
+class PersonControllerTest {
 
     @MockBean
     private LessonService lessonService;
@@ -30,9 +34,11 @@ class CoachControllerTest {
     private CoachService coachService;
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private WebApplicationContext context;
+
     UUID idOne = UUID.randomUUID();
     Coach coach = new Coach(idOne, "coachOne", "coachOne", "admin", new ArrayList<>(), new ArrayList<>());
-
 
     @Test
     void authentication() throws Exception {
@@ -45,36 +51,21 @@ class CoachControllerTest {
                 .andExpect(redirectedUrl("http://localhost/login"));
     }
 
-    //TODO : be able to tests with authentication all functionalities
+//TODO : be able to tests with authentication all functionalities
 
 //    @Test
-//    void findLessonByDay() throws Exception {
-//        when(lessonService.findLessonByDay("monday")).thenReturn(Collections.singletonList(
+//    @WithMockUser
+//    void findAllLessons() throws Exception {
+//        when(lessonService.findAll()).thenReturn(Collections.singletonList(
 //                new Lesson(idOne, "monday", "11", "MMA", "easy", new ArrayList<>(), coach)
 //        ));
-//        mockMvc.perform(get("/coach/findLessonByDay")
-//                        .param("day", "monday")
+//        mockMvc.perform(get("/person/lessons")
 //                )
-//                .andExpect(jsonPath("$[0].id", is(idOne)))
-//                .andExpect(jsonPath("$[0].day", is("monday")))
-//                .andExpect(status().isOk());
+//                .andExpect(status().isFound());
 //    }
 //
 //    @Test
-//    void findLessonByhour() {
-//    }
-//
-//    @Test
-//    void findLessonByCoachId() {
-//    }
-//
-//    @Test
-//    void addPersonToCoachList() {
-//    }
-//
-//    @Test
-//    void addLesson() {
-//
+//    void findAllCoaches() {
 //    }
 //
 //    @Test

@@ -66,8 +66,12 @@ public class PersonService {
     }
 
     public void delete (UuId id) {
-        Person personToDelete = personDao.findById(id.getId()).orElseThrow(() -> new PersonByIdNotFoundException(id.getId()));
-        personDao.delete(personToDelete);
-        logger.info("delete user : {}", personToDelete);
+        Person personToDelete = findById(id);
+        if (!personToDelete.getStatus().equals("admin")) {
+            personDao.delete(personToDelete);
+            logger.info("delete user : {}", personToDelete);
+        } else {
+            throw new EntityForbiddenDeleteException(id);
+        }
     }
 }

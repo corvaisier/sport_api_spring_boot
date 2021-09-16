@@ -79,7 +79,7 @@ public class CoachServiceTest {
 
         assertThatThrownBy(() -> coachService.delete(uuIdTwo))
                 .isInstanceOf(EntityForbiddenDeleteException.class)
-                .hasMessage("This coach: " + uuIdTwo + " can't be changed ! ");
+                .hasMessage("This entity: " + uuIdTwo + " can't be changed ! ");
     }
 
     @Test

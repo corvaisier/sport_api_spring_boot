@@ -1,7 +1,9 @@
 package com.julien.sportapi.dto.lesson;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@AllArgsConstructor
 @Data
 public class AddNewLesson {
     private String day;
