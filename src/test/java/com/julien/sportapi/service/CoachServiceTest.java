@@ -5,10 +5,12 @@ import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.coach.AddPersonToCoachList;
-import com.julien.sportapi.dto.coach.SignUpCoach;
+import com.julien.sportapi.dto.coach.CoachDto;
+import com.julien.sportapi.dto.coach.CoachDtoForUpdate;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
 import com.julien.sportapi.exception.CoachException.CoachByNameNotFoundException;
+import com.julien.sportapi.exception.CoachException.CoachNameNotUniqException;
 import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.CoachException.CoachPersonAlreadyExistException;
 import org.hamcrest.MatcherAssert;
@@ -52,7 +54,7 @@ public class CoachServiceTest {
 
     @Test
     void add() {
-        SignUpCoach signUpCoach = new SignUpCoach("coach", "password");
+        CoachDto signUpCoach = new CoachDto("coach", "password");
         coachService.add(signUpCoach);
         ArgumentCaptor<Coach> coachArgumentCaptor = ArgumentCaptor.forClass(Coach.class);
         verify(coachDao).add(coachArgumentCaptor.capture());
@@ -83,22 +85,16 @@ public class CoachServiceTest {
     }
 
     @Test
+    //TODO: implement exception tests
     void update() {
         Coach coachOne =  coachList.get(0);
-        Optional<Coach> optionalCoach = Optional.of(coachOne);
 
-        Coach coachTwo = new Coach(idTwo, "coachOne", "coachOne", "admin", new ArrayList<>(), new ArrayList<>());
-        when(coachDao.findById(idTwo)).thenReturn(optionalCoach);
+        CoachDtoForUpdate coachForUpdate = new CoachDtoForUpdate("coachOne", "coachOne", "admin", "admin");
+        when(coachDao.findByName(coachForUpdate.getCurrentName())).thenReturn(coachOne);
+        doNothing().when(coachDao).add(Optional.ofNullable(coachOne).get());
 
-        when (coachDao.findById(idOne)).thenReturn(optionalCoach);
-        doNothing().when(coachDao).add(optionalCoach.get());
-
-        coachService.update(coachOne);
+        coachService.update(coachForUpdate);
         verify(coachDao).add(coachOne);
-
-        assertThatThrownBy(() -> coachService.update(coachTwo))
-                .isInstanceOf(EntityForbiddenDeleteException.class)
-                .hasMessage("This entity: " + uuIdTwo + " can't be changed ! ");
     }
 
     @Test
