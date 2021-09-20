@@ -1,13 +1,10 @@
 package com.julien.sportapi.service;
 
 import com.julien.sportapi.dao.Person.PersonDao;
-import com.julien.sportapi.domain.Lesson;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.dto.person.PersonDto;
 import com.julien.sportapi.dto.person.PersonDtoForUpdate;
-import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
-import com.julien.sportapi.exception.PersonException.PersonByEmailNotFoundException;
 import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
 import com.julien.sportapi.exception.PersonException.PersonLoginNotUniqException;
@@ -53,6 +50,9 @@ public class PersonService {
     }
 
     public void update(PersonDtoForUpdate personDtoForUpdate) {
+
+        if(!personDao.findByEmail(personDtoForUpdate.getNewEmail()).isEmpty())
+            throw new PersonLoginNotUniqException(personDtoForUpdate.getNewEmail());
 
         Person personToUpdate = personDao.findByEmail(personDtoForUpdate.getCurrentEmail()).get(0);
 
