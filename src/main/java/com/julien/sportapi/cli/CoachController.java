@@ -3,6 +3,7 @@ package com.julien.sportapi.cli;
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Lesson;
 import com.julien.sportapi.dto.coach.AddPersonToCoachList;
+import com.julien.sportapi.dto.coach.CoachDtoForUpdate;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.dto.lesson.LessonDto;
 import com.julien.sportapi.service.CoachService;
@@ -87,7 +88,7 @@ public class CoachController {
 
     @PatchMapping("/update")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void update(@RequestBody Coach coach) {
-        coachService.update(coach);
+    void update(@RequestBody CoachDtoForUpdate coachDtoForUpdate) {
+        coachService.update(coachDtoForUpdate);
     }
 }

@@ -5,9 +5,11 @@ import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.coach.AddPersonToCoachList;
-import com.julien.sportapi.dto.coach.SignUpCoach;
+import com.julien.sportapi.dto.coach.CoachDto;
+import com.julien.sportapi.dto.coach.CoachDtoForUpdate;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
+import com.julien.sportapi.exception.CoachException.CoachByNameNotFoundException;
 import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.CoachException.CoachNameNotUniqException;
 import com.julien.sportapi.exception.CoachException.CoachPersonAlreadyExistException;
@@ -32,7 +34,7 @@ public class CoachService {
     private final PasswordEncoder passwordEncoder;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void add(SignUpCoach signUpCoach) throws CoachNameNotUniqException {
+    public void add(CoachDto signUpCoach) throws CoachNameNotUniqException {
         if(coachDao.findByName(signUpCoach.getName()) != null)
             throw new CoachNameNotUniqException(signUpCoach.getName());
         else {
@@ -58,15 +60,23 @@ public class CoachService {
         }
     }
 
-    public void update(Coach coach) {
-        Coach coachToUpdate = coachDao.findById(coach.getId()).orElseThrow(() -> new CoachByIdNotFoundException(coach.getId()));
-        UuId id = new UuId(coach.getId());
-        if (coach.getStatus().equals(coachToUpdate.getStatus())) {
-            coachDao.add(coach);
-            logger.info("update coach : {}", coach);
-        } else {
-            throw new EntityForbiddenDeleteException(id);
+    public void update(CoachDtoForUpdate coachDtoForUpdate) {
+        Coach coachToUpdate = coachDao.findByName(coachDtoForUpdate.getCurrentName());
+        Coach verifyCoachNameIsUniq = coachDao.findByName(coachDtoForUpdate.getNewName());
+
+        if (coachToUpdate == null) {
+            throw new CoachByNameNotFoundException(coachDtoForUpdate.getCurrentName());
         }
+        if (coachDtoForUpdate.getCurrentName().equals(coachDtoForUpdate.getNewName()) && verifyCoachNameIsUniq != null) {
+
+            coachToUpdate.setName(coachDtoForUpdate.getNewName());
+            coachToUpdate.setPassword(coachDtoForUpdate.getNewPassword());
+            coachDao.add(coachToUpdate);
+            logger.info("update coach : {}", coachToUpdate.getName());
+        } else {
+            throw new CoachNameNotUniqException(coachDtoForUpdate.getNewName());
+        }
+
     }
 
     public List<Coach> findAll() {

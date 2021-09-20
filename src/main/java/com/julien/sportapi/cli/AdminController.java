@@ -1,7 +1,8 @@
 package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Coach;
-import com.julien.sportapi.dto.coach.SignUpCoach;
+import com.julien.sportapi.dto.coach.CoachDto;
+import com.julien.sportapi.dto.coach.CoachDtoForUpdate;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.dto.lesson.LessonDto;
 import com.julien.sportapi.dto.person.PersonDtoForUpdate;
@@ -38,12 +39,12 @@ public class AdminController {
     @PostMapping("/addCoach")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    void add(@RequestBody SignUpCoach signUpCoach) { coachService.add(signUpCoach);}
+    void add(@RequestBody CoachDto signUpCoach) { coachService.add(signUpCoach);}
 
     @PatchMapping("/updateCoach")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void update(@RequestBody Coach coach) {
-        coachService.update(coach);
+    void update(@RequestBody CoachDtoForUpdate coachDtoForUpdate) {
+        coachService.update(coachDtoForUpdate);
     }
 
     @DeleteMapping("/deleteCoach")
