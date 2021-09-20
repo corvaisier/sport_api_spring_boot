@@ -10,7 +10,6 @@ import com.julien.sportapi.dto.coach.CoachDtoForUpdate;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
 import com.julien.sportapi.exception.CoachException.CoachByNameNotFoundException;
-import com.julien.sportapi.exception.CoachException.CoachNameNotUniqException;
 import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.CoachException.CoachPersonAlreadyExistException;
 import org.hamcrest.MatcherAssert;
