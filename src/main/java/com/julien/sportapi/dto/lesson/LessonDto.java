@@ -5,7 +5,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class AddNewLesson {
+public class LessonDto {
     private String day;
     private String hour;
     private String name;

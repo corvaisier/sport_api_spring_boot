@@ -2,7 +2,7 @@ package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Lesson;
-import com.julien.sportapi.dto.person.SignUpPerson;
+import com.julien.sportapi.dto.person.PersonDto;
 import com.julien.sportapi.service.LessonService;
 import com.julien.sportapi.service.PersonService;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class ProspectControllerTest {
                 "  \"email\": \"email@email.com\",\n" +
                 "  \"password\": \"password\"\n" +
                 "}\n";
-        SignUpPerson signUpPerson = new SignUpPerson("name", "firstName", "email@email.com", "password");
+        PersonDto signUpPerson = new PersonDto("name", "firstName", "email@email.com", "password");
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/prospect/sign-up")
                         .contentType(MediaType.APPLICATION_JSON)

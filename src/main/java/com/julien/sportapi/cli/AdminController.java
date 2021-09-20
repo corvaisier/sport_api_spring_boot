@@ -1,11 +1,10 @@
 package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Coach;
-import com.julien.sportapi.domain.Lesson;
-import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.coach.SignUpCoach;
 import com.julien.sportapi.dto.general.UuId;
-import com.julien.sportapi.dto.lesson.AddNewLesson;
+import com.julien.sportapi.dto.lesson.LessonDto;
+import com.julien.sportapi.dto.person.PersonDtoForUpdate;
 import com.julien.sportapi.service.CoachService;
 import com.julien.sportapi.service.LessonService;
 import com.julien.sportapi.service.PersonService;
@@ -26,8 +25,8 @@ public class AdminController {
 
     @PatchMapping("/updatePerson")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void updatePerson(@RequestBody Person person) {
-        personService.update(person);
+    void updatePerson(@RequestBody PersonDtoForUpdate personDtoForUpdate) {
+        personService.update(personDtoForUpdate);
     }
 
     @DeleteMapping("/deletePerson")
@@ -54,13 +53,13 @@ public class AdminController {
 
     @PostMapping("/addLesson")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void addLesson(@RequestBody AddNewLesson addNewLesson) {
-        lessonService.addLesson(addNewLesson);
+    public void addLesson(@RequestBody LessonDto lessonDto) {
+        lessonService.addLesson(lessonDto);
     }
 
     @PatchMapping("/updateLesson")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void updateLesson(@RequestBody AddNewLesson lesson) {
+    void updateLesson(@RequestBody LessonDto lesson) {
         lessonService.updateLesson(lesson);
     }
 

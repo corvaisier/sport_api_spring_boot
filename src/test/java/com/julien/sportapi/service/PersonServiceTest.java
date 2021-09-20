@@ -3,7 +3,9 @@ package com.julien.sportapi.service;
 import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.general.UuId;
-import com.julien.sportapi.dto.person.SignUpPerson;
+import com.julien.sportapi.dto.person.PersonDto;
+import com.julien.sportapi.dto.person.PersonDtoForUpdate;
+import com.julien.sportapi.exception.PersonException.PersonLoginNotUniqException;
 import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
 import org.hamcrest.MatcherAssert;
@@ -58,7 +60,7 @@ class PersonServiceTest {
 
     @Test
     void add() {
-        SignUpPerson signUpPerson = new SignUpPerson("person", "firstName", "email@email.com", "password");
+        PersonDto signUpPerson = new PersonDto("person", "firstName", "different@email.com", "password");
         personService.add(signUpPerson);
         ArgumentCaptor<Person> coachArgumentCaptor = ArgumentCaptor.forClass(Person.class);
         verify(personDao).add(coachArgumentCaptor.capture());
@@ -66,25 +68,32 @@ class PersonServiceTest {
         Person personSentToDao = coachArgumentCaptor.getValue();
         MatcherAssert.assertThat(personSentToDao.getId(), is(Matchers.notNullValue()));
         MatcherAssert.assertThat(personSentToDao.getName(), is("person"));
+
+        PersonDto wrongSignUpPerson = new PersonDto("person", "firstName", "email@email.com", "password");
+        when(personDao.findByEmail(wrongSignUpPerson.getEmail())).thenReturn(Collections.singletonList(personList.get(0)));
+        assertThatThrownBy(() -> personService.add(wrongSignUpPerson))
+                .isInstanceOf(PersonLoginNotUniqException.class)
+                .hasMessage("This login is not uniq :" + wrongSignUpPerson.getEmail());
+
     }
 
     @Test
     void update() {
-        Person personOne =  personList.get(0);
-        Optional<Person> optionalPerson = Optional.of(personOne);
+        Person personOne = personList.get(0);
 
-        Person personTwo = new Person(idOne, "name", "firstName", "email@email.com", "password", "admin", new ArrayList<>(), new ArrayList<>());
-        when(personDao.findById(idTwo)).thenReturn(optionalPerson);
+        PersonDtoForUpdate personDtoForUpdate = new PersonDtoForUpdate("name", "firstName", "different@email.com", "email@email.com", "baba", "baba" );
 
-        when (personDao.findById(idOne)).thenReturn(optionalPerson);
-        doNothing().when(personDao).add(optionalPerson.get());
+        when(personDao.findByEmail(personDtoForUpdate.getCurrentEmail())).thenReturn(Collections.singletonList(personOne));
+        doNothing().when(personDao).add(personOne);
 
-        personService.update(personOne);
+        personService.update(personDtoForUpdate);
         verify(personDao).add(personOne);
 
-        assertThatThrownBy(() -> personService.update(personTwo))
-                .isInstanceOf(EntityForbiddenDeleteException.class)
-                .hasMessage("This entity: " + uuIdOne + " can't be changed ! ");
+        PersonDtoForUpdate wrongPersonDtoForUpdate = new PersonDtoForUpdate("name", "firstName", "email@email.com", "email@email.com", "baba", "baba" );
+        when(personDao.findByEmail(wrongPersonDtoForUpdate.getCurrentEmail())).thenReturn(Collections.singletonList(personList.get(0)));
+        assertThatThrownBy(() -> personService.update(wrongPersonDtoForUpdate))
+                .isInstanceOf(PersonLoginNotUniqException.class)
+                .hasMessage("This login is not uniq :" + wrongPersonDtoForUpdate.getNewEmail());
     }
 
     @Test

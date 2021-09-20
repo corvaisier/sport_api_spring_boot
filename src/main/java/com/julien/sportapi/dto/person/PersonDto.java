@@ -6,7 +6,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class SignUpPerson {
+public class PersonDto {
     private String name;
     private String firstName;
     private String email;

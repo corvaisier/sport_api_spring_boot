@@ -4,7 +4,7 @@ import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Lesson;
 import com.julien.sportapi.dto.coach.AddPersonToCoachList;
 import com.julien.sportapi.dto.general.UuId;
-import com.julien.sportapi.dto.lesson.AddNewLesson;
+import com.julien.sportapi.dto.lesson.LessonDto;
 import com.julien.sportapi.service.CoachService;
 
 import com.julien.sportapi.service.LessonService;
@@ -68,13 +68,13 @@ public class CoachController {
 
     @PostMapping("/addLesson")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void addLesson(@RequestBody AddNewLesson addNewLesson) {
-        lessonService.addLesson(addNewLesson);
+    public void addLesson(@RequestBody LessonDto lessonDto) {
+        lessonService.addLesson(lessonDto);
     }
 
     @PatchMapping("/updateLesson")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void update(@RequestBody AddNewLesson lesson) {
+    void update(@RequestBody LessonDto lesson) {
         lessonService.updateLesson(lesson);
     }
 
