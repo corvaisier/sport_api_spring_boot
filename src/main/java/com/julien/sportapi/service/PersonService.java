@@ -5,7 +5,9 @@ import com.julien.sportapi.domain.Lesson;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.dto.person.PersonDto;
+import com.julien.sportapi.dto.person.PersonDtoForUpdate;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
+import com.julien.sportapi.exception.PersonException.PersonByEmailNotFoundException;
 import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
 import com.julien.sportapi.exception.PersonException.PersonLoginNotUniqException;
@@ -50,16 +52,24 @@ public class PersonService {
         }
     }
 
-    public void update(PersonDto personDto) {
-        Person personToUpdate = personDao.findByEmail(personDto.getEmail()).get(0);
+    public void update(PersonDtoForUpdate personDtoForUpdate) {
+
+        Person personToUpdate = personDao.findByEmail(personDtoForUpdate.getCurrentEmail()).get(0);
+
+        personToUpdate.setName(personDtoForUpdate.getName());
+        personToUpdate.setFirstName(personDtoForUpdate.getFirstName());
+        personToUpdate.setEmail(personDtoForUpdate.getNewEmail());
+        personToUpdate.setPassword(personDtoForUpdate.getNewPassword());
+
         personDao.add(personToUpdate);
+        logger.info("update user : {}", personToUpdate.getEmail());
     }
 
     public void delete (UuId id) {
         Person personToDelete = findById(id);
         if (!personToDelete.getStatus().equals("admin")) {
             personDao.delete(personToDelete);
-            logger.info("delete user : {}", personToDelete);
+            logger.info("delete user : {}", personToDelete.getEmail());
         } else {
             throw new EntityForbiddenDeleteException(id);
         }

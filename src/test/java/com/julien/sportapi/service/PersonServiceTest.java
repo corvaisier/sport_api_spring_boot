@@ -4,6 +4,7 @@ import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.dto.person.PersonDto;
+import com.julien.sportapi.dto.person.PersonDtoForUpdate;
 import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
 import org.hamcrest.MatcherAssert;
@@ -72,12 +73,12 @@ class PersonServiceTest {
     void update() {
         Person personOne = personList.get(0);
 
-        PersonDto personDto = new PersonDto("name", "firstName", "email@email.com", "password");
+        PersonDtoForUpdate personDtoForUpdate = new PersonDtoForUpdate("name", "firstName", "email@email.com", "email@email.com", "baba", "baba" );
 
-        when(personDao.findByEmail(personDto.getEmail())).thenReturn(Collections.singletonList(personOne));
+        when(personDao.findByEmail(personDtoForUpdate.getCurrentEmail())).thenReturn(Collections.singletonList(personOne));
         doNothing().when(personDao).add(personOne);
 
-        personService.update(personDto);
+        personService.update(personDtoForUpdate);
         verify(personDao).add(personOne);
     }
 

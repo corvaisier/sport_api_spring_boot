@@ -4,7 +4,7 @@ import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.dto.coach.SignUpCoach;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.dto.lesson.LessonDto;
-import com.julien.sportapi.dto.person.PersonDto;
+import com.julien.sportapi.dto.person.PersonDtoForUpdate;
 import com.julien.sportapi.service.CoachService;
 import com.julien.sportapi.service.LessonService;
 import com.julien.sportapi.service.PersonService;
@@ -25,8 +25,8 @@ public class AdminController {
 
     @PatchMapping("/updatePerson")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void updatePerson(@RequestBody PersonDto personDto) {
-        personService.update(personDto);
+    void updatePerson(@RequestBody PersonDtoForUpdate personDtoForUpdate) {
+        personService.update(personDtoForUpdate);
     }
 
     @DeleteMapping("/deletePerson")
