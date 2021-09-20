@@ -1,9 +1,10 @@
 package com.julien.sportapi.service;
 
 import com.julien.sportapi.dao.Person.PersonDao;
+import com.julien.sportapi.domain.Lesson;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.general.UuId;
-import com.julien.sportapi.dto.person.SignUpPerson;
+import com.julien.sportapi.dto.person.PersonDto;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
 import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
@@ -14,9 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +31,7 @@ public class PersonService {
         return personDao.findById(personId.getId()).orElseThrow(() -> new PersonByIdNotFoundException(personId.getId()));
     }
 
-    public void add(SignUpPerson signUpPerson) throws PersonLoginNotUniqException {
+    public void add(PersonDto signUpPerson) throws PersonLoginNotUniqException {
         if(!personDao.findByEmail(signUpPerson.getEmail()).isEmpty()) {
             throw new PersonLoginNotUniqException(signUpPerson.getEmail());
         }
@@ -51,15 +50,9 @@ public class PersonService {
         }
     }
 
-    public void update(Person person) {
-        Person personToUpdate = personDao.findById(person.getId()).orElseThrow(() -> new CoachByIdNotFoundException(person.getId()));
-        UuId id = new UuId(person.getId());
-        if (person.getStatus().equals(personToUpdate.getStatus())) {
-            personDao.add(person);
-            logger.info("update person : {}", person);
-        } else {
-            throw new EntityForbiddenDeleteException(id);
-        }
+    public void update(PersonDto personDto) {
+        Person personToUpdate = personDao.findByEmail(personDto.getEmail()).get(0);
+        personDao.add(personToUpdate);
     }
 
     public void delete (UuId id) {

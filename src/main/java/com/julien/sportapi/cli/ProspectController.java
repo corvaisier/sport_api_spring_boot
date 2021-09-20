@@ -1,7 +1,7 @@
 package com.julien.sportapi.cli;
 
 import com.julien.sportapi.domain.Lesson;
-import com.julien.sportapi.dto.person.SignUpPerson;
+import com.julien.sportapi.dto.person.PersonDto;
 import com.julien.sportapi.service.LessonService;
 import com.julien.sportapi.service.PersonService;
 import lombok.AllArgsConstructor;
@@ -23,7 +23,7 @@ public class ProspectController {
     @PostMapping("/sign-up")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
-    void add(@RequestBody SignUpPerson signUpPerson) { personService.add(signUpPerson);}
+    void add(@RequestBody PersonDto signUpPerson) { personService.add(signUpPerson);}
 
     @GetMapping("")
     @ResponseStatus(code = HttpStatus.CREATED)

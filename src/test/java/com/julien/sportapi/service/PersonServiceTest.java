@@ -3,7 +3,7 @@ package com.julien.sportapi.service;
 import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.general.UuId;
-import com.julien.sportapi.dto.person.SignUpPerson;
+import com.julien.sportapi.dto.person.PersonDto;
 import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
 import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
 import org.hamcrest.MatcherAssert;
@@ -58,7 +58,7 @@ class PersonServiceTest {
 
     @Test
     void add() {
-        SignUpPerson signUpPerson = new SignUpPerson("person", "firstName", "email@email.com", "password");
+        PersonDto signUpPerson = new PersonDto("person", "firstName", "email@email.com", "password");
         personService.add(signUpPerson);
         ArgumentCaptor<Person> coachArgumentCaptor = ArgumentCaptor.forClass(Person.class);
         verify(personDao).add(coachArgumentCaptor.capture());
@@ -70,21 +70,15 @@ class PersonServiceTest {
 
     @Test
     void update() {
-        Person personOne =  personList.get(0);
-        Optional<Person> optionalPerson = Optional.of(personOne);
+        Person personOne = personList.get(0);
 
-        Person personTwo = new Person(idOne, "name", "firstName", "email@email.com", "password", "admin", new ArrayList<>(), new ArrayList<>());
-        when(personDao.findById(idTwo)).thenReturn(optionalPerson);
+        PersonDto personDto = new PersonDto("name", "firstName", "email@email.com", "password");
 
-        when (personDao.findById(idOne)).thenReturn(optionalPerson);
-        doNothing().when(personDao).add(optionalPerson.get());
+        when(personDao.findByEmail(personDto.getEmail())).thenReturn(Collections.singletonList(personOne));
+        doNothing().when(personDao).add(personOne);
 
-        personService.update(personOne);
+        personService.update(personDto);
         verify(personDao).add(personOne);
-
-        assertThatThrownBy(() -> personService.update(personTwo))
-                .isInstanceOf(EntityForbiddenDeleteException.class)
-                .hasMessage("This entity: " + uuIdOne + " can't be changed ! ");
     }
 
     @Test

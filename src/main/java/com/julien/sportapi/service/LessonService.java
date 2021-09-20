@@ -3,7 +3,7 @@ package com.julien.sportapi.service;
 
 import com.julien.sportapi.dao.Lesson.LessonDao;
 import com.julien.sportapi.domain.Lesson;
-import com.julien.sportapi.dto.lesson.AddNewLesson;
+import com.julien.sportapi.dto.lesson.LessonDto;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.exception.LessonException.LessonByIdNotFoundException;
 import com.julien.sportapi.exception.LessonException.LessonDateTimeNotValidException;
@@ -44,16 +44,16 @@ public class LessonService {
         return lessonDao.findLessonByCoach_Id(id.getId());
     }
 
-    public void addLesson(AddNewLesson addNewLesson) throws LessonDateTimeNotValidException {
-        if(!isLessonAvailable(addNewLesson)) {
-            throw new LessonDateTimeNotValidException(addNewLesson.getHour(), addNewLesson.getDay() );
+    public void addLesson(LessonDto lessonDto) throws LessonDateTimeNotValidException {
+        if(!isLessonAvailable(lessonDto)) {
+            throw new LessonDateTimeNotValidException(lessonDto.getHour(), lessonDto.getDay() );
         } else {
             Lesson newLesson = Lesson.builder()
                     .id(UUID.randomUUID())
-                    .day(addNewLesson.getDay())
-                    .hour(addNewLesson.getHour())
-                    .name(addNewLesson.getName())
-                    .difficulty(addNewLesson.getDifficulty())
+                    .day(lessonDto.getDay())
+                    .hour(lessonDto.getHour())
+                    .name(lessonDto.getName())
+                    .difficulty(lessonDto.getDifficulty())
                     .build();
             lessonDao.add(newLesson);
             logger.info("create new user : {}", newLesson);
@@ -67,7 +67,7 @@ public class LessonService {
 
     }
 
-    public void updateLesson(AddNewLesson lesson) {
+    public void updateLesson(LessonDto lesson) {
         List<Lesson> lessonFirstFilter = lessonDao.findByHour(lesson.getHour());
         List<Lesson> lessonSecondFilter = lessonDao.findByDay(lesson.getDay());
         Set<Lesson> lessonToUpdate = new HashSet<>();
@@ -77,7 +77,7 @@ public class LessonService {
         logger.info("update lesson : {}",  lessonToUpdate.iterator().next().getId());
     }
 
-    private Boolean isLessonAvailable(AddNewLesson addNewLesson) {
-        return lessonDao.findByHour(addNewLesson.getHour()).isEmpty() && lessonDao.findByDay(addNewLesson.getDay()).isEmpty();
+    private Boolean isLessonAvailable(LessonDto lessonDto) {
+        return lessonDao.findByHour(lessonDto.getHour()).isEmpty() && lessonDao.findByDay(lessonDto.getDay()).isEmpty();
     }
 }

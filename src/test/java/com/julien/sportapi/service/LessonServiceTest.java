@@ -4,7 +4,7 @@ import com.julien.sportapi.dao.Lesson.LessonDao;
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Lesson;
 import com.julien.sportapi.dto.general.UuId;
-import com.julien.sportapi.dto.lesson.AddNewLesson;
+import com.julien.sportapi.dto.lesson.LessonDto;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -86,8 +86,8 @@ class LessonServiceTest {
 
     @Test
     void addLesson() {
-        AddNewLesson addNewLesson = new AddNewLesson("Sunday", "10", "MMA", "hard");
-        lessonService.addLesson(addNewLesson);
+        LessonDto lessonDto = new LessonDto("Sunday", "10", "MMA", "hard");
+        lessonService.addLesson(lessonDto);
         ArgumentCaptor<Lesson> lessonArgumentCaptor = ArgumentCaptor.forClass(Lesson.class);
         verify(lessonDao).add(lessonArgumentCaptor.capture());
 
@@ -110,7 +110,7 @@ class LessonServiceTest {
     @Test
     void updateLesson() {
         Lesson lessonOne =  lessonList.get(0);
-        AddNewLesson updateLesson = new AddNewLesson("monday", "hour", "kevin", "difficulty");
+        LessonDto updateLesson = new LessonDto("monday", "hour", "kevin", "difficulty");
 
         when(lessonDao.findByHour(updateLesson.getHour())).thenReturn(Collections.singletonList(lessonOne));
         when(lessonDao.findByDay(updateLesson.getDay())).thenReturn(Collections.singletonList(lessonOne));
