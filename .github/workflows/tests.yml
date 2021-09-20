@@ -14,4 +14,5 @@ jobs:
           java-version: 1.8
       - name: Compile code
         run: mvn compile
-        run mvn clean package
+      - name: run tests
+        run: mvn clean package
