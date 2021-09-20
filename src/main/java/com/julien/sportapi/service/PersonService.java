@@ -43,7 +43,7 @@ public class PersonService {
                     .firstName(signUpPerson.getFirstName())
                     .email(signUpPerson.getEmail())
                     .password(passwordEncoder.encode(signUpPerson.getPassword()))
-                    .status("customer")
+                    .status("person")
                     .coaches(new ArrayList<>())
                     .build();
             personDao.add(newPerson);
