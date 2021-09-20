@@ -66,7 +66,7 @@ public class CoachController {
     public void addPersonToCoachList(@RequestBody AddPersonToCoachList addPersonToCoachList) {
         coachService.attachPerson(addPersonToCoachList);
     }
-
+//TODO: update update system for lessons
     @PostMapping("/addLesson")
     @ResponseStatus(code = HttpStatus.CREATED)
     public void addLesson(@RequestBody LessonDto lessonDto) {
