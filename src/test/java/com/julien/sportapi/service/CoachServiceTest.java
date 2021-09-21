@@ -43,8 +43,8 @@ public class CoachServiceTest {
     private final UuId uuIdTwo = new UuId(idTwo);
 
     private final List<Coach> coachList = Arrays.asList(
-            new Coach(idOne, "coachOne", "coachOne", "coach", new ArrayList<>(), new ArrayList<>()),
-            new Coach(idTwo, "coachTwo", "coachTwo", "admin", new ArrayList<>(), new ArrayList<>())
+            new Coach(idOne, "coachOne", "coachOne@gmail.com", "coach", "coach", new ArrayList<>(), new ArrayList<>()),
+            new Coach(idTwo, "coachTwo","coachTwo@gmail.com", "coachTwo", "admin", new ArrayList<>(), new ArrayList<>())
     );
     private final List<Person> personList = Arrays.asList(
             new Person(idOne, "name", "firstName", "email@email.com", "password", "customer", new ArrayList<>(), new ArrayList<>()),
@@ -53,7 +53,7 @@ public class CoachServiceTest {
 
     @Test
     void add() {
-        CoachDto signUpCoach = new CoachDto("coach", "password");
+        CoachDto signUpCoach = new CoachDto("coach", "coach@gmail.com", "coach");
         coachService.add(signUpCoach);
         ArgumentCaptor<Coach> coachArgumentCaptor = ArgumentCaptor.forClass(Coach.class);
         verify(coachDao).add(coachArgumentCaptor.capture());
@@ -88,7 +88,7 @@ public class CoachServiceTest {
     void update() {
         Coach coachOne =  coachList.get(0);
 
-        CoachDtoForUpdate coachForUpdate = new CoachDtoForUpdate("coachOne", "coachOne", "admin", "admin");
+        CoachDtoForUpdate coachForUpdate = new CoachDtoForUpdate("coachOne", "coachWoaou", "coachOne@gmail.com", "coachWoaou@gmail.com", "coach", "coachWoaou");
         when(coachDao.findByName(coachForUpdate.getCurrentName())).thenReturn(coachOne);
         doNothing().when(coachDao).add(Optional.ofNullable(coachOne).get());
 

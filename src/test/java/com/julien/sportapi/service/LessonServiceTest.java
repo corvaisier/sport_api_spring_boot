@@ -33,7 +33,7 @@ class LessonServiceTest {
     private final UuId uuIdOne = new UuId(idOne);
     private final UuId uuIdTwo = new UuId(idTwo);
 
-    private final Coach coach = new Coach(idOne, "coachOne", "coachOne", "coach", new ArrayList<>(), new ArrayList<>());
+    private final Coach coach =  new Coach(idOne, "coachOne", "coachOne@gmail.com", "coach", "coach", new ArrayList<>(), new ArrayList<>());
     private final List<Lesson> lessonList = Arrays.asList(
             new Lesson(idOne, "monday", "hour", "kevin", "difficulty", new ArrayList<>(), coach),
             new Lesson(idTwo, "day", "14", "name", "simple", new ArrayList<>(), coach)
