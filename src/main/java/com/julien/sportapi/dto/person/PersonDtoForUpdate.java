@@ -19,6 +19,5 @@ public class PersonDtoForUpdate {
     private String currentPassword;
     @NonNull
     private String newPassword;
-
 }
 
