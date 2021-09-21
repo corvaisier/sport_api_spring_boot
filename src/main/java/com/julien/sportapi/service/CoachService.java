@@ -41,6 +41,7 @@ public class CoachService {
             Coach newCoach = Coach.builder()
                     .id(UUID.randomUUID())
                     .name(signUpCoach.getName())
+                    .email(signUpCoach.getEmail())
                     .password(passwordEncoder.encode(signUpCoach.getPassword()))
                     .persons(new ArrayList<>())
                     .status("coach")
