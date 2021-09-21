@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.validation.constraints.Email;
+
 @AllArgsConstructor
 @Data
 public class CoachDtoForUpdate {
@@ -11,6 +13,12 @@ public class CoachDtoForUpdate {
     private String currentName;
     @NonNull
     private String newName;
+    @NonNull
+    @Email
+    private String currentEmail;
+    @NonNull
+    @Email
+    private String newEmail;
     @NonNull
     private String currentPassword;
     @NonNull

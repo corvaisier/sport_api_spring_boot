@@ -38,7 +38,7 @@ class PersonControllerTest {
     private WebApplicationContext context;
 
     UUID idOne = UUID.randomUUID();
-    Coach coach = new Coach(idOne, "coachOne", "coachOne", "admin", new ArrayList<>(), new ArrayList<>());
+    Coach coach =  new Coach(idOne, "coachOne", "coachOne@gmail.com", "coach", "coach", new ArrayList<>(), new ArrayList<>());
 
     @Test
     void authentication() throws Exception {

@@ -25,8 +25,13 @@ public class CoachDaoInDB implements CoachDao{
     }
 
     @Override
-    public Coach findByName(String name) {
-        return coachRepository.findByName(name);
+    public Optional<Coach> findCoachByName(String name) {
+        return coachRepository.findCoachByName(name);
+    }
+
+    @Override
+    public Optional<Coach> findCoachByEmail(String coachEmail) {
+        return coachRepository.findCoachByEmail(coachEmail);
     }
 
     @Override
