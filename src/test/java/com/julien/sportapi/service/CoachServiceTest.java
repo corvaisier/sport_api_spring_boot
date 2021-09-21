@@ -84,12 +84,11 @@ public class CoachServiceTest {
     }
 
     @Test
-    //TODO: implement exception tests
     void update() {
         Coach coachOne =  coachList.get(0);
 
         CoachDtoForUpdate coachForUpdate = new CoachDtoForUpdate("coachOne", "coachWoaou", "coachOne@gmail.com", "coachWoaou@gmail.com", "coach", "coachWoaou");
-        when(coachDao.findByName(coachForUpdate.getCurrentName())).thenReturn(coachOne);
+        when(coachDao.findCoachByEmail(coachForUpdate.getCurrentEmail())).thenReturn(Optional.ofNullable(coachOne));
         doNothing().when(coachDao).add(Optional.ofNullable(coachOne).get());
 
         coachService.update(coachForUpdate);
@@ -103,15 +102,15 @@ public class CoachServiceTest {
     }
 
     @Test
-    void findByName() {
+    void findCoachByName() {
         Coach expectCoach = coachList
                 .stream().filter(c -> Objects.equals(c.getName(), "coachOne"))
                 .findFirst().orElseThrow(() -> new CoachByNameNotFoundException("coachOne"));
-        when(coachDao.findByName("coachOne")).thenReturn(expectCoach);
-        when(coachDao.findByName("impossibleName")).thenThrow(new CoachByNameNotFoundException("impossibleName"));
+        when(coachDao.findCoachByName("coachOne")).thenReturn(Optional.ofNullable(expectCoach));
+        when(coachDao.findCoachByName("impossibleName")).thenThrow(new CoachByNameNotFoundException("impossibleName"));
 
-        MatcherAssert.assertThat(coachService.findByName("coachOne"), equalTo(expectCoach));
-        assertThatThrownBy(() -> coachService.findByName("impossibleName"))
+        MatcherAssert.assertThat(coachService.findCoachByName("coachOne"), equalTo(expectCoach));
+        assertThatThrownBy(() -> coachService.findCoachByName("impossibleName"))
                 .isInstanceOf(CoachByNameNotFoundException.class)
                 .hasMessage("a coach with name impossibleName does not exist");
     }

@@ -1,7 +1,6 @@
 package com.julien.sportapi.service;
 
 import com.julien.sportapi.dao.Coach.CoachDao;
-import com.julien.sportapi.dao.Person.PersonDao;
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Person;
 import com.julien.sportapi.dto.coach.AddPersonToCoachList;
@@ -11,9 +10,8 @@ import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.exception.CoachException.CoachByIdNotFoundException;
 import com.julien.sportapi.exception.CoachException.CoachByNameNotFoundException;
 import com.julien.sportapi.exception.general.EntityForbiddenDeleteException;
-import com.julien.sportapi.exception.CoachException.CoachNameNotUniqException;
+import com.julien.sportapi.exception.CoachException.CoachEmailNotUniqException;
 import com.julien.sportapi.exception.CoachException.CoachPersonAlreadyExistException;
-import com.julien.sportapi.exception.PersonException.PersonByIdNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,25 +28,26 @@ import java.util.List;
 public class CoachService {
 
     private final CoachDao coachDao;
-    private final PersonDao personDao;
+    private final PersonService personService;
     private final PasswordEncoder passwordEncoder;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void add(CoachDto signUpCoach) throws CoachNameNotUniqException {
-        if(coachDao.findByName(signUpCoach.getName()) != null)
-            throw new CoachNameNotUniqException(signUpCoach.getName());
-        else {
-            Coach newCoach = Coach.builder()
-                    .id(UUID.randomUUID())
-                    .name(signUpCoach.getName())
-                    .email(signUpCoach.getEmail())
-                    .password(passwordEncoder.encode(signUpCoach.getPassword()))
-                    .persons(new ArrayList<>())
-                    .status("coach")
-                    .build();
-            coachDao.add(newCoach);
-            logger.info("create new coach : {}", newCoach);
-        }
+    public void add(CoachDto signUpCoach) throws CoachEmailNotUniqException {
+            try {
+                Coach newCoach = Coach.builder()
+                        .id(UUID.randomUUID())
+                        .name(signUpCoach.getName())
+                        .email(signUpCoach.getEmail())
+                        .password(passwordEncoder.encode(signUpCoach.getPassword()))
+                        .persons(new ArrayList<>())
+                        .status("coach")
+                        .build();
+                coachDao.add(newCoach);
+                logger.info("create new coach : {}", newCoach);
+            } catch (Exception e) {
+                    throw new CoachEmailNotUniqException(signUpCoach.getEmail());
+            }
+
     }
 
     public void delete(UuId id) throws EntityForbiddenDeleteException {
@@ -62,30 +61,24 @@ public class CoachService {
     }
 
     public void update(CoachDtoForUpdate coachDtoForUpdate) {
-        Coach coachToUpdate = coachDao.findByName(coachDtoForUpdate.getCurrentName());
-        Coach verifyCoachNameIsUniq = coachDao.findByName(coachDtoForUpdate.getNewName());
+        Coach coachToUpdate = findCoachByEmail(coachDtoForUpdate.getCurrentEmail());
+        coachToUpdate.setName(coachDtoForUpdate.getNewName());
+        coachToUpdate.setEmail(coachDtoForUpdate.getNewEmail());
+        coachToUpdate.setPassword(coachDtoForUpdate.getNewPassword());
+        coachDao.add(coachToUpdate);
+        logger.info("update coach : {}", coachToUpdate.getName());
+    }
 
-        if (coachToUpdate == null) {
-            throw new CoachByNameNotFoundException(coachDtoForUpdate.getCurrentName());
-        }
-        if (coachDtoForUpdate.getCurrentName().equals(coachDtoForUpdate.getNewName()) && verifyCoachNameIsUniq != null) {
-
-            coachToUpdate.setName(coachDtoForUpdate.getNewName());
-            coachToUpdate.setPassword(coachDtoForUpdate.getNewPassword());
-            coachDao.add(coachToUpdate);
-            logger.info("update coach : {}", coachToUpdate.getName());
-        } else {
-            throw new CoachNameNotUniqException(coachDtoForUpdate.getNewName());
-        }
-
+    public Coach findCoachByEmail(String email) {
+        return coachDao.findCoachByEmail(email).orElseThrow(() -> new CoachEmailNotUniqException(email));
     }
 
     public List<Coach> findAll() {
         return coachDao.findAll();
     }
 
-    public Coach findByName(String name) {
-        return coachDao.findByName(name);
+    public Coach findCoachByName(String name) {
+        return coachDao.findCoachByName(name).orElseThrow(() -> new CoachByNameNotFoundException(name));
     }
 
     public Coach findById(UuId id) {
@@ -93,14 +86,16 @@ public class CoachService {
     }
 
     public List<Person> findPerson(UuId id) {
-        Coach coach = coachDao.findById(id.getId()).orElseThrow(() -> new CoachByIdNotFoundException(id.getId()));
+        Coach coach = findById(id);
         return coach.getPersons();
     }
 
     @Transactional
     public void attachPerson(AddPersonToCoachList addPersonToCoachList) {
-        Coach coach = coachDao.findById(addPersonToCoachList.getCoachId()).orElseThrow(() -> new CoachByIdNotFoundException(addPersonToCoachList.getCoachId()));
-        Person person = personDao.findById(addPersonToCoachList.getPersonId()).orElseThrow(() -> new PersonByIdNotFoundException(addPersonToCoachList.getPersonId()));
+        UuId coachId = new UuId(addPersonToCoachList.getCoachId());
+        UuId personId = new UuId(addPersonToCoachList.getPersonId());
+        Coach coach = findById(coachId);
+        Person person = personService.findById(personId);
         if(coach.getPersons().stream().anyMatch(c -> c.getId() == person.getId())) {
             throw new CoachPersonAlreadyExistException(person.getId());
         }

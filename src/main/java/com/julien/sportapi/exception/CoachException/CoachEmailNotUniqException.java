@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 
-public class CoachNameNotUniqException extends RuntimeException {
+public class CoachEmailNotUniqException extends RuntimeException {
 
-    public CoachNameNotUniqException(String coachName) {
-        super("a coach with name " + coachName + " is not uniq");
+    public CoachEmailNotUniqException(String coachEmail) {
+        super("a coach with email " + coachEmail + " is not uniq");
     }
 }
