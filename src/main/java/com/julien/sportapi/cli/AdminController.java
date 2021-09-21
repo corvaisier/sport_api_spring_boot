@@ -5,6 +5,7 @@ import com.julien.sportapi.dto.coach.CoachDto;
 import com.julien.sportapi.dto.coach.CoachDtoForUpdate;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.dto.lesson.LessonDto;
+import com.julien.sportapi.dto.lesson.LessonDtoForUpdate;
 import com.julien.sportapi.dto.person.PersonDtoForUpdate;
 import com.julien.sportapi.service.CoachService;
 import com.julien.sportapi.service.LessonService;
@@ -60,7 +61,7 @@ public class AdminController {
 
     @PatchMapping("/updateLesson")
     @ResponseStatus(code = HttpStatus.CREATED)
-    void updateLesson(@RequestBody LessonDto lesson) {
+    void updateLesson(@RequestBody LessonDtoForUpdate lesson) {
         lessonService.updateLesson(lesson);
     }
 

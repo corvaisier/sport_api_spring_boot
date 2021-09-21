@@ -5,6 +5,7 @@ import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Lesson;
 import com.julien.sportapi.dto.general.UuId;
 import com.julien.sportapi.dto.lesson.LessonDto;
+import com.julien.sportapi.dto.lesson.LessonDtoForUpdate;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -110,10 +111,10 @@ class LessonServiceTest {
     @Test
     void updateLesson() {
         Lesson lessonOne =  lessonList.get(0);
-        LessonDto updateLesson = new LessonDto("monday", "hour", "kevin", "difficulty");
+        LessonDtoForUpdate updateLesson = new LessonDtoForUpdate("monday", "sunday", "14", "12", "MMA", "MMA", "hard", "hard");
 
-        when(lessonDao.findByHour(updateLesson.getHour())).thenReturn(Collections.singletonList(lessonOne));
-        when(lessonDao.findByDay(updateLesson.getDay())).thenReturn(Collections.singletonList(lessonOne));
+        when(lessonDao.findByHour(updateLesson.getCurrentHour())).thenReturn(Collections.singletonList(lessonOne));
+        when(lessonDao.findByDay(updateLesson.getCurrentDay())).thenReturn(Collections.singletonList(lessonOne));
         doNothing().when(lessonDao).add(lessonOne);
 
         lessonService.updateLesson(updateLesson);

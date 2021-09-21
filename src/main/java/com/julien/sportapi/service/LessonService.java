@@ -5,6 +5,7 @@ import com.julien.sportapi.dao.Lesson.LessonDao;
 import com.julien.sportapi.domain.Lesson;
 import com.julien.sportapi.dto.lesson.LessonDto;
 import com.julien.sportapi.dto.general.UuId;
+import com.julien.sportapi.dto.lesson.LessonDtoForUpdate;
 import com.julien.sportapi.exception.LessonException.LessonByIdNotFoundException;
 import com.julien.sportapi.exception.LessonException.LessonDateTimeNotValidException;
 import lombok.RequiredArgsConstructor;
@@ -64,12 +65,11 @@ public class LessonService {
         Lesson lessonToDelete = lessonDao.findById(id.getId()).orElseThrow(() -> new LessonByIdNotFoundException(id.getId()));
         lessonDao.delete(lessonToDelete);
         logger.info("delete lesson : {}", id.getId());
-
     }
 
-    public void updateLesson(LessonDto lesson) {
-        List<Lesson> lessonFirstFilter = lessonDao.findByHour(lesson.getHour());
-        List<Lesson> lessonSecondFilter = lessonDao.findByDay(lesson.getDay());
+    public void updateLesson(LessonDtoForUpdate lessonDtoForUpdate) {
+        List<Lesson> lessonFirstFilter = lessonDao.findByHour(lessonDtoForUpdate.getCurrentHour());
+        List<Lesson> lessonSecondFilter = lessonDao.findByDay(lessonDtoForUpdate.getCurrentDay());
         Set<Lesson> lessonToUpdate = new HashSet<>();
         lessonToUpdate.addAll(lessonFirstFilter);
         lessonToUpdate.addAll(lessonSecondFilter);
