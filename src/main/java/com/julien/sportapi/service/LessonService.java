@@ -2,6 +2,7 @@ package com.julien.sportapi.service;
 
 
 import com.julien.sportapi.dao.Lesson.LessonDao;
+import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Lesson;
 import com.julien.sportapi.dto.lesson.LessonDto;
 import com.julien.sportapi.dto.general.UuId;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LessonService {
     private final LessonDao lessonDao;
+    private final CoachService coachService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<Lesson> findAll() {
@@ -46,15 +48,18 @@ public class LessonService {
     }
 
     public void addLesson(LessonDto lessonDto) throws LessonDateTimeNotValidException {
-        if(!isLessonAvailable(lessonDto)) {
+        if(isLessonAvailable(lessonDto)) {
             throw new LessonDateTimeNotValidException(lessonDto.getHour(), lessonDto.getDay() );
         } else {
+            UuId id = new UuId(lessonDto.getCoachId());
+            Coach coach = coachService.findById(id);
             Lesson newLesson = Lesson.builder()
                     .id(UUID.randomUUID())
                     .day(lessonDto.getDay())
                     .hour(lessonDto.getHour())
                     .name(lessonDto.getName())
                     .difficulty(lessonDto.getDifficulty())
+                    .coach(coach)
                     .build();
             lessonDao.add(newLesson);
             logger.info("create new user : {}", newLesson);
@@ -78,6 +83,6 @@ public class LessonService {
     }
 
     private Boolean isLessonAvailable(LessonDto lessonDto) {
-        return lessonDao.findByHour(lessonDto.getHour()).isEmpty() && lessonDao.findByDay(lessonDto.getDay()).isEmpty();
+        return !lessonDao.findByHour(lessonDto.getHour()).isEmpty() && lessonDao.findByDay(lessonDto.getDay()).isEmpty();
     }
 }

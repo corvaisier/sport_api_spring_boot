@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @Data
 public class LessonDto {
@@ -15,4 +17,6 @@ public class LessonDto {
     private String name;
     @NonNull
     private String difficulty;
+    @NonNull
+    private UUID coachId;
 }

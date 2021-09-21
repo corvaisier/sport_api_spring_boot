@@ -1,5 +1,6 @@
 package com.julien.sportapi.service;
 
+import com.julien.sportapi.dao.Coach.CoachDao;
 import com.julien.sportapi.dao.Lesson.LessonDao;
 import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.domain.Lesson;
@@ -27,6 +28,8 @@ class LessonServiceTest {
     private LessonService lessonService;
     @MockBean
     private LessonDao lessonDao;
+    @MockBean
+    private CoachDao coachDao;
 
     private final UUID idOne = UUID.randomUUID();
     private final UUID idTwo = UUID.randomUUID();
@@ -87,7 +90,8 @@ class LessonServiceTest {
 
     @Test
     void addLesson() {
-        LessonDto lessonDto = new LessonDto("Sunday", "10", "MMA", "hard");
+        LessonDto lessonDto = new LessonDto("Sunday", "10", "MMA", "hard", idOne);
+        when(coachDao.findById(idOne)).thenReturn(Optional.of(coach));
         lessonService.addLesson(lessonDto);
         ArgumentCaptor<Lesson> lessonArgumentCaptor = ArgumentCaptor.forClass(Lesson.class);
         verify(lessonDao).add(lessonArgumentCaptor.capture());

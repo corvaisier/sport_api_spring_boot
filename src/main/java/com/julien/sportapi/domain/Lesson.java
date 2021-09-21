@@ -35,5 +35,6 @@ public class Lesson {
     @ManyToMany(mappedBy = "lessons")
     private List<Person> persons;
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Coach coach;
 }

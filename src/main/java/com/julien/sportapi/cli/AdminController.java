@@ -1,6 +1,5 @@
 package com.julien.sportapi.cli;
 
-import com.julien.sportapi.domain.Coach;
 import com.julien.sportapi.dto.coach.CoachDto;
 import com.julien.sportapi.dto.coach.CoachDtoForUpdate;
 import com.julien.sportapi.dto.general.UuId;
@@ -36,7 +35,6 @@ public class AdminController {
     @ResponseStatus(code = HttpStatus.CREATED)
     void deletePerson(@RequestBody UuId id) { personService.delete(id);}
 
-    //how to use super constructor
     @PostMapping("/addCoach")
     @ResponseStatus(code = HttpStatus.CREATED)
     @ResponseBody
@@ -71,5 +69,4 @@ public class AdminController {
     void deleteLesson(@RequestBody UuId id) {
         lessonService.deleteLesson(id);
     }
-
 }
