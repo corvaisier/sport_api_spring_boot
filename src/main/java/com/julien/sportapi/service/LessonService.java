@@ -62,7 +62,7 @@ public class LessonService {
                     .coach(coach)
                     .build();
             lessonDao.add(newLesson);
-            logger.info("create new user : {}", newLesson);
+            logger.info("create new lesson : {}", newLesson);
         }
     }
 
